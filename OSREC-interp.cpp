@@ -138,6 +138,9 @@ int main(int argc,char *argv[])
     }
     else if (readDataMode[0] == DataFormatBinaryTag) {
         _recordingDataMode = DataMode::Binary;
+	std::cerr << "Sorry, currently only Ascii data type is supported.";
+        return false;
+	    
     }
     else {
         std::cerr << "Unknown data type in header (should be Ascii or Binary)";
