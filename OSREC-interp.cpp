@@ -47,7 +47,33 @@ static const std::string FileHeaderTitle = "OpenSpace_record/playback";
 static const std::string HeaderCameraAscii = "camera";
 static const std::string HeaderTimeAscii = "time";
 static const std::string HeaderScriptAscii = "script";
+static const size_t FileHeaderVersionLength = 5;
+char FileHeaderVersion[FileHeaderVersionLength+1] = "01.00";
+char TargetConvertVersion[FileHeaderVersionLength+1] = "01.00";
+static const char DataFormatAsciiTag = 'A';
+static const char DataFormatBinaryTag = 'B';
+static const size_t keyframeHeaderSize_bytes = 33;
+static const size_t saveBufferCameraSize_min = 82;
 
+enum class DataMode {
+        Ascii = 0,
+        Binary,
+        Unknown
+    };
+
+enum class SessionState {
+        Idle = 0,
+        Recording,
+        Playback,
+        PlaybackPaused
+    };
+
+struct Timestamps {
+        double timeOs;
+        double timeRec;
+        double timeSim;
+    };
+DataMode _recordingDataMode = DataMode::Binary;
 
 
 std::string readHeaderElement(std::ifstream& stream,
@@ -100,6 +126,18 @@ int main(int argc,char *argv[])
     );
     if (readBackHeaderString != FileHeaderTitle) {
         std::cerr << "Specified osrec file does not contain expected header" << std::endl;
+        return false;
+    }
+    readHeaderElement(_playbackFile, FileHeaderVersionLength);
+    std::string readDataMode = readHeaderElement(_playbackFile, 1);
+    if (readDataMode[0] == DataFormatAsciiTag) {
+        _recordingDataMode = DataMode::Ascii;
+    }
+    else if (readDataMode[0] == DataFormatBinaryTag) {
+        _recordingDataMode = DataMode::Binary;
+    }
+    else {
+        std::cerr << "Unknown data type in header (should be Ascii or Binary)";
         return false;
     }
 	   
