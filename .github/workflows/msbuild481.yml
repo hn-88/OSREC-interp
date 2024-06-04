@@ -55,7 +55,7 @@ jobs:
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: |
         msbuild /m /p:Platform=x64 /p:Configuration=Release ${{env.SOLUTION_FILE_PATH}}
-        Rename-Item "x64\Release\v481x64Win10.exe" "x64\Release\OSRECinterp.exe"
+        Rename-Item "x64\Release\v481x64Win10.exe" -NewName "OSRECinterp.exe"
 
 
 
