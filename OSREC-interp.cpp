@@ -43,6 +43,28 @@
 
 using namespace cv;
 
+inline static const std::string FileHeaderTitle = "OpenSpace_record/playback";
+inline static const std::string HeaderCameraAscii = "camera";
+inline static const std::string HeaderTimeAscii = "time";
+inline static const std::string HeaderScriptAscii = "script";
+
+
+
+std::string readHeaderElement(std::ifstream& stream,
+                                                size_t readLenChars)
+{
+    std::vector<char> readTemp(readLenChars);
+    stream.read(readTemp.data(), readLenChars);
+    return std::string(readTemp.begin(), readTemp.end());
+}
+
+std::string readHeaderElement(std::stringstream& stream,
+                                                size_t readLenChars)
+{
+    std::vector<char> readTemp = std::vector<char>(readLenChars);
+    stream.read(readTemp.data(), readLenChars);
+    return std::string(readTemp.begin(), readTemp.end());
+}
 
 int main(int argc,char *argv[])
 {
@@ -71,6 +93,15 @@ int main(int argc,char *argv[])
 	int _playbackLineNum = 1;
 
 	_playbackFile.open(_playbackFilename, std::ifstream::in);
+	// Read header
+	const std::string readBackHeaderString = readHeaderElement(
+        _playbackFile,
+        FileHeaderTitle.length()
+    );
+    if (readBackHeaderString != FileHeaderTitle) {
+        std::cerr << "Specified osrec file does not contain expected header" << std::endl;
+        return false;
+    }
 	   
 	   
 } // end main
