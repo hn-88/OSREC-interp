@@ -92,6 +92,76 @@ std::string readHeaderElement(std::stringstream& stream,
     return std::string(readTemp.begin(), readTemp.end());
 }
 
+bool readSingleKeyframeCamera(CameraKeyframe& kf,
+                                                Timestamps& times, DataMode mode,
+                                                std::ifstream& file, std::string& inLine,
+                                                const int lineNum)
+{
+    if (mode == DataMode::Binary) {
+        return readCameraKeyframeBinary(times, kf, file, lineNum);
+    }
+    else {
+        return readCameraKeyframeAscii(times, kf, inLine, lineNum);
+    }
+}
+
+readCameraKeyframeBinary(Timestamps& times,
+                                                datamessagestructures::CameraKeyframe& kf,
+                                                std::ifstream& file, int lineN)
+{
+    times.timeOs = readFromPlayback<double>(file);
+    times.timeRec = readFromPlayback<double>(file);
+    times.timeSim = readFromPlayback<double>(file);
+
+    try {
+        kf.read(&file);
+    }
+    catch (std::bad_alloc&) {
+        LERROR(std::format(
+            "Allocation error with camera playback from keyframe entry {}",
+            lineN - 1
+        ));
+        return false;
+    }
+    catch (std::length_error&) {
+        LERROR(std::format(
+            "length_error with camera playback from keyframe entry {}",
+            lineN - 1
+        ));
+        return false;
+    }
+
+    if (!file) {
+        LINFO(std::format(
+            "Error reading camera playback from keyframe entry {}",
+            lineN - 1
+        ));
+        return false;
+    }
+    return true;
+}
+
+bool readCameraKeyframeAscii(Timestamps& times,
+                                               CameraKeyframe& kf,
+                                               const std::string& currentParsingLine,
+                                               int lineN)
+{
+    std::istringstream iss = std::istringstream(currentParsingLine);
+    std::string entryType;
+    iss >> entryType;
+    iss >> times.timeOs >> times.timeRec >> times.timeSim;
+    kf.read(iss);
+    // ASCII format does not contain trailing timestamp so add it here
+    kf._timestamp = times.timeOs;
+
+    if (iss.fail() || !iss.eof()) {
+        LERROR(std::format("Error parsing camera line {} of playback file", lineN));
+        return false;
+    }
+    return true;
+}
+
+
 int main(int argc,char *argv[])
 {
 	std::cout << "This tool takes an initial osrectxt file, appends to it camera keyframes from subsequent osrectxt files with suitable interpolation, and saves as a new osrectxt file.";
