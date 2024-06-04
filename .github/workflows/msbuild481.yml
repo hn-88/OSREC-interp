@@ -56,14 +56,12 @@ jobs:
       run: |
         msbuild /m /p:Platform=x64 /p:Configuration=Release ${{env.SOLUTION_FILE_PATH}}
         Rename-Item "x64\Release\v481x64Win10.exe" -NewName "OSRECinterp.exe"
-
-
-
+        
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4
       with:
         # Artifact name
-        name: OCVtestWin10
+        name: OSREC-interp
         # optional, default is artifact
         # A file, directory or wildcard pattern that describes what to upload
         path: x64\Release\*.exe
