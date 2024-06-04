@@ -55,6 +55,8 @@ static const char DataFormatBinaryTag = 'B';
 static const size_t keyframeHeaderSize_bytes = 33;
 static const size_t saveBufferCameraSize_min = 82;
 
+std::ofstream destfileout;
+
 enum class DataMode {
         Ascii = 0,
         Binary,
@@ -107,6 +109,22 @@ int main(int argc,char *argv[])
 	char const * SaveFileName = "";
 	char const * OpenFileName = "";
 	char const * FilterPatterns[2] =  { "*.osrec","*.osrectxt" };
+
+	SaveFileName = tinyfd_saveFileDialog(
+		"Choose the name and path of the destination file",
+		"final.osrectxt",
+		1,
+		FilterPatterns,
+		NULL);
+	try {
+		destfileout(SaveFileName);
+		destfileout << "This is a test";
+	} catch (int) {
+		std::cerr << "An error occured creating destination file."<< std::endl ; 
+		return false;
+	}
+
+	
 	OpenFileName = tinyfd_openFileDialog(
 				"Open the initial osrectxt file",
 				"",
