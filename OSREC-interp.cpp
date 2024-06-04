@@ -161,10 +161,7 @@ int main(int argc,char *argv[])
     }
 
     if (!_playbackFile.is_open() || !_playbackFile.good()) {
-        std::cerr << std::format(
-            "Unable to open file '{}' for keyframe playback", _playbackFilename.c_str()
-        ));
-        
+        std::cerr << "Unable to open file";        
         return false;
     }
 	   
