@@ -56,7 +56,18 @@ static const size_t keyframeHeaderSize_bytes = 33;
 static const size_t saveBufferCameraSize_min = 82;
 
 std::ofstream destfileout;
+std::string tempstring;
+/* https://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
+	can split using
+string s, tmp; 
+stringstream ss(s);
+vector<string> words;
 
+while(getline(ss, tmp, ',')){
+    words.push_back(tmp);
+    .....
+}
+*/
 enum class DataMode {
         Ascii = 0,
         Binary,
@@ -117,8 +128,7 @@ int main(int argc,char *argv[])
 		FilterPatterns,
 		NULL);
 	try {
-		destfileout.open(SaveFileName, std::ofstream::out | std::ofstream::app);
-		destfileout << "This is a test";
+		destfileout.open(SaveFileName, std::ofstream::out | std::ofstream::app);		
 	} catch (int) {
 		std::cerr << "An error occured creating destination file."<< std::endl ; 
 		return false;
@@ -132,7 +142,10 @@ int main(int argc,char *argv[])
 				FilterPatterns,
 				NULL,
 				0);
+	//////////////////////////////////////////////////
 	// from https://github.com/OpenSpace/OpenSpace/blob/0ff646a94c8505b2b285fdd51800cdebe0dda111/src/interaction/sessionrecording.cpp#L363
+	// checking the osrectxt format etc
+	/////////////////////////
 	std::string _playbackFilename = OpenFileName;
 	std::ifstream _playbackFile;
 	std::string _playbackLineParsing;
@@ -188,6 +201,18 @@ int main(int argc,char *argv[])
         std::cerr << "Unable to open file";        
         return false;
     }
+	//////////////////////////////////////////////////////
+	// start the copy from initial osrectxt to destination
+	// and also find the last camera keyframe.
+	//////////////////////////////////////////////////////
+
+	_playbackFile.close();
+	_playbackFile.open(_playbackFilename, std::ifstream::in);
+	char line[2560];
+	while(_playbackFile.getline(line, 2560);) {
+		_playbackFile.getline(line, 2560);
+		destfileout << line << std::endl;
+	}
 	   
 	   
 } // end main
