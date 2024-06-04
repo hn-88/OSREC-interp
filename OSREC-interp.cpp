@@ -140,6 +140,33 @@ int main(int argc,char *argv[])
         std::cerr << "Unknown data type in header (should be Ascii or Binary)";
         return false;
     }
+	// throwaway newline character(s)
+    std::string lineEnd = readHeaderElement(_playbackFile, 1);
+    bool hasDosLineEnding = (lineEnd == "\r");
+    if (hasDosLineEnding) {
+        // throwaway the second newline character (\n) also
+        readHeaderElement(_playbackFile, 1);
+    }
+
+    if (_recordingDataMode == DataMode::Binary) {
+        // Close & re-open the file, starting from the beginning, and do dummy read
+        // past the header, version, and data type
+        _playbackFile.close();
+        _playbackFile.open(_playbackFilename, std::ifstream::in | std::ios::binary);
+        const size_t headerSize = FileHeaderTitle.length() + FileHeaderVersionLength
+            + sizeof(DataFormatBinaryTag) + sizeof('\n');
+        std::vector<char> hBuffer;
+        hBuffer.resize(headerSize);
+        _playbackFile.read(hBuffer.data(), headerSize);
+    }
+
+    if (!_playbackFile.is_open() || !_playbackFile.good()) {
+        std::cerr << std::format(
+            "Unable to open file '{}' for keyframe playback", _playbackFilename.c_str()
+        ));
+        
+        return false;
+    }
 	   
 	   
 } // end main
