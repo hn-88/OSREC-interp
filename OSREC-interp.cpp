@@ -43,10 +43,10 @@
 
 using namespace cv;
 
-inline static const std::string FileHeaderTitle = "OpenSpace_record/playback";
-inline static const std::string HeaderCameraAscii = "camera";
-inline static const std::string HeaderTimeAscii = "time";
-inline static const std::string HeaderScriptAscii = "script";
+static const std::string FileHeaderTitle = "OpenSpace_record/playback";
+static const std::string HeaderCameraAscii = "camera";
+static const std::string HeaderTimeAscii = "time";
+static const std::string HeaderScriptAscii = "script";
 
 
 
