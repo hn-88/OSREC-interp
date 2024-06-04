@@ -60,9 +60,17 @@ int main(int argc,char *argv[])
 				"Open the initial osrectxt file",
 				"",
 				2,
-				FilterPatternsini,
+				FilterPatterns,
 				NULL,
 				0);
+	// from https://github.com/OpenSpace/OpenSpace/blob/0ff646a94c8505b2b285fdd51800cdebe0dda111/src/interaction/sessionrecording.cpp#L363
+	std::string _playbackFilename = OpenFileName;
+	std::ifstream _playbackFile;
+	std::string _playbackLineParsing;
+	std::ofstream _recordFile;
+	int _playbackLineNum = 1;
+
+	_playbackFile.open(_playbackFilename, std::ifstream::in);
 	   
 	   
 } // end main
