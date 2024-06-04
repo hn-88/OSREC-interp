@@ -117,7 +117,7 @@ int main(int argc,char *argv[])
 		FilterPatterns,
 		NULL);
 	try {
-		destfileout(SaveFileName);
+		destfileout.open(SaveFileName, std::ofstream::out | std::ofstream::app);
 		destfileout << "This is a test";
 	} catch (int) {
 		std::cerr << "An error occured creating destination file."<< std::endl ; 
