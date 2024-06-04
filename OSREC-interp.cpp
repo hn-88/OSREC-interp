@@ -3,15 +3,15 @@
 #endif
 
 /*
- * Copied from OCVWarp.cpp
+ * Copied and modified from OCVWarp.cpp - https://github.com/hn-88/OCVWarp
  * 
  * 
- * testing for an opencv bug
- * https://github.com/opencv/opencv/issues/10694
+ * Take the camera keyframes from multiple osrectxt files and chain them together with minimal interpolation.
+ * https://github.com/OpenSpace/OpenSpace/discussions/3294
  * 
  * first commit:
  * Hari Nandakumar
- * 23 May 2024
+ * 4 June 2024
  * 
  * 
  */
