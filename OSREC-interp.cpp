@@ -35,11 +35,65 @@
 
 #include <opencv2/opencv.hpp>
 #include "tinyfiledialogs.h"
-#include "sessionrecording.h"
+#define CVUI_IMPLEMENTATION
+#include "cvui.h"
+#define WINDOW_NAME "OCVWARP - HIT <esc> TO CLOSE"
 
 #define CV_PI   3.1415926535897932384626433832795
 
 using namespace cv;
+
+static const std::string FileHeaderTitle = "OpenSpace_record/playback";
+static const std::string HeaderCameraAscii = "camera";
+static const std::string HeaderTimeAscii = "time";
+static const std::string HeaderScriptAscii = "script";
+static const size_t FileHeaderVersionLength = 5;
+char FileHeaderVersion[FileHeaderVersionLength+1] = "01.00";
+char TargetConvertVersion[FileHeaderVersionLength+1] = "01.00";
+static const char DataFormatAsciiTag = 'A';
+static const char DataFormatBinaryTag = 'B';
+static const size_t keyframeHeaderSize_bytes = 33;
+static const size_t saveBufferCameraSize_min = 82;
+
+enum class DataMode {
+        Ascii = 0,
+        Binary,
+        Unknown
+    };
+
+enum class SessionState {
+        Idle = 0,
+        Recording,
+        Playback,
+        PlaybackPaused
+    };
+
+struct Timestamps {
+        double timeOs;
+        double timeRec;
+        double timeSim;
+    };
+DataMode _recordingDataMode = DataMode::Binary;
+
+
+std::string readHeaderElement(std::ifstream& stream,
+                                                size_t readLenChars)
+{
+    std::vector<char> readTemp(readLenChars);
+    stream.read(readTemp.data(), readLenChars);
+    return std::string(readTemp.begin(), readTemp.end());
+}
+
+std::string readHeaderElement(std::stringstream& stream,
+                                                size_t readLenChars)
+{
+    std::vector<char> readTemp = std::vector<char>(readLenChars);
+    stream.read(readTemp.data(), readLenChars);
+    return std::string(readTemp.begin(), readTemp.end());
+}
+
+
+
 
 int main(int argc,char *argv[])
 {
