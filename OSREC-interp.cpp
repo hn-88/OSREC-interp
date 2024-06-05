@@ -219,7 +219,7 @@ int main(int argc,char *argv[])
 	// words[1] = string serialized number of seconds since openspace has been launched
 	// etc as in https://docs.openspaceproject.com/en/releases-v0.20.0/content/session-recording.html#ascii-file-format
 	std::stringstream ss(tempstring);
-	while(getline(ss, word, ',')) {
+	while(getline(ss, word, ' ')) {
 		words.push_back(word);
 	}
 	prevtimeOS = atof(words[1].c_str());
