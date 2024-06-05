@@ -59,6 +59,7 @@ std::stringstream tempstringstream;
 std::string word;
 std::vector<std::string> words;
 // https://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
+double timeOS, timeRec, timeSim, prevtimeOS, prevtimeRec, prevtimeSim;
 
 enum class DataMode {
         Ascii = 0,
@@ -207,14 +208,22 @@ int main(int argc,char *argv[])
 			if(line[1] == 'a') {
 				if(line[2] == 'm') {
 					tempstring = line;
-					std::cout << line[0] << line[8] << ' ';
 				}
 			}
 		}
 		
 	}
 	// tempstring now contains the last camera keyframe
-	destfileout << tempstring << std::endl;
+	// separate it out to get each of the "words" of the line
+	// words[0] = the string camera,
+	// words[1] = string serialized number of seconds since openspace has been launched
+	// etc as in https://docs.openspaceproject.com/en/releases-v0.20.0/content/session-recording.html#ascii-file-format
+	std::stringstream ss(tempstring);
+	while(getline(ss, word, ',')) {
+		words.push_back(word);
+	}
+	prevtimeOS = atof(words[1]);
+	std::cout << prevtimeOS;
 	   
 	   
 } // end main
