@@ -222,7 +222,7 @@ int main(int argc,char *argv[])
 	while(getline(ss, word, ',')) {
 		words.push_back(word);
 	}
-	prevtimeOS = atof(words[1]);
+	prevtimeOS = atof(words[1].c_str());
 	std::cout << prevtimeOS;
 	   
 	   
