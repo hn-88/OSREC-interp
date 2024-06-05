@@ -51,20 +51,15 @@ static const char DataFormatAsciiTag = 'A';
 static const char DataFormatBinaryTag = 'B';
 static const size_t keyframeHeaderSize_bytes = 33;
 static const size_t saveBufferCameraSize_min = 82;
+static const size_t lineBufferForGetlineSize = 2560;
 
 std::ofstream destfileout;
 std::string tempstring;
-/* https://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
-	can split using
-string s, tmp; 
-stringstream ss(s);
-vector<string> words;
+std::stringstream tempstringstream;
+std::string word;
+std::vector<std::string> words;
+// https://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
 
-while(getline(ss, tmp, ',')){
-    words.push_back(tmp);
-    .....
-}
-*/
 enum class DataMode {
         Ascii = 0,
         Binary,
@@ -205,10 +200,20 @@ int main(int argc,char *argv[])
 
 	_playbackFile.close();
 	_playbackFile.open(_playbackFilename, std::ifstream::in);
-	char line[2560];
-	while(_playbackFile.getline(line, 2560)) {		
+	char line[lineBufferForGetlineSize];
+	while(_playbackFile.getline(line, lineBufferForGetlineSize)) {
 		destfileout << line << std::endl;
+		if(line[0] == 'c') {
+			if(line[1] == 'a') {
+				if(line[3] == 'm') {
+					tempstring(line);
+				}
+			}
+		}
+		
 	}
+	// tempstring now contains the last camera keyframe
+	destfileout << line << std::endl;
 	   
 	   
 } // end main
