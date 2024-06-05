@@ -161,6 +161,7 @@ bool checkIfValidRecFile(std::string _playbackFilename) {
 	        std::cerr << "Unable to open file";        
 	        return false;
 	    }
+	_playbackFile.close();
 	
 }
 
@@ -215,7 +216,7 @@ int main(int argc,char *argv[])
 	// and also find the last camera keyframe.
 	//////////////////////////////////////////////////////
 
-	_playbackFile.close();
+	std::ifstream _playbackFile;
 	_playbackFile.open(_playbackFilename, std::ifstream::in);
 	char line[lineBufferForGetlineSize];
 	while(_playbackFile.getline(line, lineBufferForGetlineSize)) {
