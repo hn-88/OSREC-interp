@@ -30,6 +30,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <time.h>
 //#include <sys/stat.h>
