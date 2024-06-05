@@ -101,6 +101,68 @@ std::string readHeaderElement(std::stringstream& stream,
     return std::string(readTemp.begin(), readTemp.end());
 }
 
+bool checkIfValidRecFile(std::string _playbackFilename) {
+	//////////////////////////////////////////////////
+	// from https://github.com/OpenSpace/OpenSpace/blob/0ff646a94c8505b2b285fdd51800cdebe0dda111/src/interaction/sessionrecording.cpp#L363
+	// checking the osrectxt format etc
+	/////////////////////////
+	// std::string _playbackFilename = OpenFileName;
+	std::ifstream _playbackFile;
+	std::string _playbackLineParsing;
+	std::ofstream _recordFile;
+	int _playbackLineNum = 1;
+
+	_playbackFile.open(_playbackFilename, std::ifstream::in);
+	// Read header
+	const std::string readBackHeaderString = readHeaderElement(
+        _playbackFile,
+        FileHeaderTitle.length()
+	    );
+	    if (readBackHeaderString != FileHeaderTitle) {
+	        std::cerr << "Specified osrec file does not contain expected header" << std::endl;
+	        return false;
+	    }
+	    readHeaderElement(_playbackFile, FileHeaderVersionLength);
+	    std::string readDataMode = readHeaderElement(_playbackFile, 1);
+	    if (readDataMode[0] == DataFormatAsciiTag) {
+	        _recordingDataMode = DataMode::Ascii;
+	    }
+	    else if (readDataMode[0] == DataFormatBinaryTag) {
+	        _recordingDataMode = DataMode::Binary;
+		std::cerr << "Sorry, currently only Ascii data type is supported.";
+	        return false;
+		    
+	    }
+	    else {
+	        std::cerr << "Unknown data type in header (should be Ascii or Binary)";
+	        return false;
+	    }
+		// throwaway newline character(s)
+	    std::string lineEnd = readHeaderElement(_playbackFile, 1);
+	    bool hasDosLineEnding = (lineEnd == "\r");
+	    if (hasDosLineEnding) {
+	        // throwaway the second newline character (\n) also
+	        readHeaderElement(_playbackFile, 1);
+	    }
+	
+	    if (_recordingDataMode == DataMode::Binary) {
+	        // Close & re-open the file, starting from the beginning, and do dummy read
+	        // past the header, version, and data type
+	        _playbackFile.close();
+	        _playbackFile.open(_playbackFilename, std::ifstream::in | std::ios::binary);
+	        const size_t headerSize = FileHeaderTitle.length() + FileHeaderVersionLength
+	            + sizeof(DataFormatBinaryTag) + sizeof('\n');
+	        std::vector<char> hBuffer;
+	        hBuffer.resize(headerSize);
+	        _playbackFile.read(hBuffer.data(), headerSize);
+	    }
+	
+	    if (!_playbackFile.is_open() || !_playbackFile.good()) {
+	        std::cerr << "Unable to open file";        
+	        return false;
+	    }
+	
+}
 
 
 
