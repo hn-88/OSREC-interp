@@ -59,7 +59,8 @@ std::stringstream tempstringstream;
 std::string word;
 std::vector<std::string> words;
 // https://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
-double timeOS, timeRec, timeSim, prevtimeOS, prevtimeRec, prevtimeSim;
+double dvalue[11];
+double prevdvalue[11];
 
 enum class DataMode {
         Ascii = 0,
@@ -222,8 +223,14 @@ int main(int argc,char *argv[])
 	while(getline(ss, word, ' ')) {
 		words.push_back(word);
 	}
-	prevtimeOS = atof(words[1].c_str());
-	std::cout << prevtimeOS;
+	for (int i = 1; i < 12; i++) {
+		prevdvalue[i-1] = atof(words[i].c_str());
+	}
+
+	for (int i = 1; i < 12; i++) {
+		std::cout << prevdvalue[i-1] << " ";
+	}
+	
 	   
 	   
 } // end main
