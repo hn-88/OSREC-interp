@@ -279,13 +279,13 @@ int main(int argc,char *argv[])
 		lTmp = tinyfd_inputBox(
 			"Please Input", "Desired playback time till next keyframe in seconds", "100.0");
 			if (!lTmp) return 1 ;	
-			std::strcpy(timeincrstr,  lTmp);
+		timeincrstr =  lTmp;
 		ignoreTime = tinyfd_messageBox(
-		"Ignore simulation time?" , 
-		"Ignore the next keyframe's simulation time?"  , 
-		"yesno" , 
-		"question" , 
-		1 ) ;
+			"Ignore simulation time?" , 
+			"Ignore the next keyframe's simulation time?"  , 
+			"yesno" , 
+			"question" , 
+			1 ) ;
 		if(ignoreTime) {
 			tinyfd_messageBox("Please Note", 
 			"Since next keyframe's simulation time is ignored, time is being paused.", 
