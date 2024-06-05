@@ -5,7 +5,7 @@
 
 name: UsingOCV4.8.1
 
-on: push
+on: workflow_dispatch
 
 env:
   # Path to the solution file relative to the root of the project.
