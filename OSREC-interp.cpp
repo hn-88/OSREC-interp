@@ -33,15 +33,8 @@
 //#include <sys/stat.h>
 // this is for mkdir
 
-#include <opencv2/opencv.hpp>
 #include "tinyfiledialogs.h"
-#define CVUI_IMPLEMENTATION
-#include "cvui.h"
-#define WINDOW_NAME "OCVWARP - HIT <esc> TO CLOSE"
-
 #define CV_PI   3.1415926535897932384626433832795
-
-using namespace cv;
 
 static const std::string FileHeaderTitle = "OpenSpace_record/playback";
 static const std::string HeaderCameraAscii = "camera";
