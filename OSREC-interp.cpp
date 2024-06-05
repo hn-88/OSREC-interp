@@ -56,7 +56,8 @@ static const size_t lineBufferForGetlineSize = 2560;
 std::ofstream destfileout;
 std::string tempstring;
 std::stringstream tempstringstream;
-std::string word;
+std::string word, timeincrstr;
+double timeincr;
 std::vector<std::string> words;
 std::vector<std::string> prevwords;
 
@@ -260,7 +261,7 @@ int main(int argc,char *argv[])
 		prevdvalue[i-1] = atof(prevwords[i].c_str());
 	}
 
-	bool appendAnother; 
+	bool appendAnother, ignoreTime; 
 	while(true) {
 		appendAnother = tinyfd_messageBox(
 		"Append next keyframe osrectxt" , 
@@ -274,6 +275,28 @@ int main(int argc,char *argv[])
 		}
 		// else, append the next keyframe, that is
 		// the last camera keyframe of next osrectxt file
+		char const * lTmp;
+		lTmp = tinyfd_inputBox(
+			"Please Input", "Desired playback time till next keyframe in seconds", "100.0");
+			if (!lTmp) return 1 ;	
+			std::strcpy(timeincrstr,  lTmp);
+		ignoreTime = tinyfd_messageBox(
+		"Ignore simulation time?" , 
+		"Ignore the next keyframe's simulation time?"  , 
+		"yesno" , 
+		"question" , 
+		1 ) ;
+		if(ignoreTime) {
+			tinyfd_messageBox("Please Note", 
+			"Since next keyframe's simulation time is ignored, time is being paused.", 
+			"ok", "info", 1);
+			//script 956.698 0 768100268.890  1 openspace.time.setPause(true)
+			destfileout << "script " << prevwords[1] << " " << prevwords[2] << " " << prevwords[3] << "  1 openspace.time.setPause(true)" << std::endl;
+		} else {
+			tinyfd_messageBox("Please Note", 
+			"Not yet implemented.", 
+			"ok", "info", 1);
+		}
 		OpenFileName = tinyfd_openFileDialog(
 				"Open the next osrectxt file",
 				"",
@@ -294,6 +317,7 @@ int main(int argc,char *argv[])
 		for (int i = 1; i < 12; i++) {
 			dvalue[i-1] = atof(words[i].c_str());
 		}
+		
 		
 	}
 
