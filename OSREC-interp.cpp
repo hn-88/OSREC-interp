@@ -58,6 +58,8 @@ std::string tempstring;
 std::stringstream tempstringstream;
 std::string word;
 std::vector<std::string> words;
+std::vector<std::string> prevwords;
+
 // https://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
 double dvalue[11];
 double prevdvalue[11];
@@ -221,15 +223,30 @@ int main(int argc,char *argv[])
 	// etc as in https://docs.openspaceproject.com/en/releases-v0.20.0/content/session-recording.html#ascii-file-format
 	std::stringstream ss(tempstring);
 	while(getline(ss, word, ' ')) {
-		words.push_back(word);
+		prevwords.push_back(word);
 	}
 	for (int i = 1; i < 12; i++) {
-		prevdvalue[i-1] = atof(words[i].c_str());
+		prevdvalue[i-1] = atof(prevwords[i].c_str());
 	}
 
-	for (int i = 1; i < 12; i++) {
-		std::cout << prevdvalue[i-1] << " ";
+	bool appendAnother; 
+	while(true) {
+		appendAnother = tinyfd_messageBox(
+		"Append next keyframe osrectxt" , 
+		"Append one more osrectxt?"  , 
+		"yesno" , 
+		"question" , 
+		1 ) ;
+
+		if (!appendAnother) {
+			break;
+		}
+		// else, append the next keyframe, that is
+		// the last camera keyframe of next osrectxt file
+		
 	}
+
+
 	
 	   
 	   
