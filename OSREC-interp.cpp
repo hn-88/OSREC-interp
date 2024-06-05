@@ -165,6 +165,23 @@ bool checkIfValidRecFile(std::string _playbackFilename) {
 	
 }
 
+std::string getLastCameraKfstring(std::string _playbackFilename) {
+	std::ifstream _playbackFile;
+	_playbackFile.open(_playbackFilename, std::ifstream::in);
+	char line[lineBufferForGetlineSize];
+	while(_playbackFile.getline(line, lineBufferForGetlineSize)) {
+		if(line[0] == 'c') {
+			if(line[1] == 'a') {
+				if(line[2] == 'm') {
+					tempstring = line;
+				}
+			}
+		}
+		
+	}
+	return tempstring;	
+}
+
 
 
 int main(int argc,char *argv[])
