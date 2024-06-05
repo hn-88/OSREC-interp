@@ -209,8 +209,7 @@ int main(int argc,char *argv[])
 	_playbackFile.close();
 	_playbackFile.open(_playbackFilename, std::ifstream::in);
 	char line[2560];
-	while(_playbackFile.getline(line, 2560);) {
-		_playbackFile.getline(line, 2560);
+	while(_playbackFile.getline(line, 2560)) {		
 		destfileout << line << std::endl;
 	}
 	   
