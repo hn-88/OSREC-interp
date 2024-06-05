@@ -111,12 +111,12 @@ int main(int argc,char *argv[])
 	
 	char const * SaveFileName = "";
 	char const * OpenFileName = "";
-	char const * FilterPatterns[2] =  { "*.osrec","*.osrectxt" };
+	char const * FilterPatterns[2] =  { "*.osrectxt","*.osrec" };
 
 	SaveFileName = tinyfd_saveFileDialog(
 		"Choose the name and path of the destination file",
 		"final.osrectxt",
-		1,
+		2,
 		FilterPatterns,
 		NULL);
 	try {
