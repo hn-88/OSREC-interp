@@ -206,7 +206,7 @@ int main(int argc,char *argv[])
 		if(line[0] == 'c') {
 			if(line[1] == 'a') {
 				if(line[3] == 'm') {
-					tempstring(line);
+					tempstring = line;
 				}
 			}
 		}
