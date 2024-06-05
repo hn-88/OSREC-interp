@@ -274,6 +274,26 @@ int main(int argc,char *argv[])
 		}
 		// else, append the next keyframe, that is
 		// the last camera keyframe of next osrectxt file
+		OpenFileName = tinyfd_openFileDialog(
+				"Open the next osrectxt file",
+				"",
+				2,
+				FilterPatterns,
+				NULL,
+				0);
+		std::string pbFilename = OpenFileName;
+		bool validf = checkIfValidRecFile(pbFilename);
+		if (!validf) {
+			return false;
+		}
+		std::string nextKfstr = getLastCameraKfstring(pbFilename);
+		std::stringstream ss2(nextKfstr);
+		while(getline(ss2, word, ' ')) {
+			words.push_back(word);
+		}
+		for (int i = 1; i < 12; i++) {
+			dvalue[i-1] = atof(words[i].c_str());
+		}
 		
 	}
 
