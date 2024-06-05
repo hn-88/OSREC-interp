@@ -203,6 +203,7 @@ int main(int argc,char *argv[])
 	char line[lineBufferForGetlineSize];
 	while(_playbackFile.getline(line, lineBufferForGetlineSize)) {
 		destfileout << line << std::endl;
+		std::cout << line[0] << line[8] << ' ';
 		if(line[0] == 'c') {
 			if(line[1] == 'a') {
 				if(line[3] == 'm') {
