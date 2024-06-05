@@ -213,7 +213,7 @@ int main(int argc,char *argv[])
 		
 	}
 	// tempstring now contains the last camera keyframe
-	destfileout << line << std::endl;
+	destfileout << tempstring << std::endl;
 	   
 	   
 } // end main
