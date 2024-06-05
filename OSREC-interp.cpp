@@ -207,6 +207,7 @@ int main(int argc,char *argv[])
 			if(line[1] == 'a') {
 				if(line[3] == 'm') {
 					tempstring = line;
+					std::cout << line[0] << line[8] << ' ';
 				}
 			}
 		}
