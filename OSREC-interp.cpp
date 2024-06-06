@@ -60,7 +60,6 @@ std::string word, timeincrstr;
 double timeincr;
 std::vector<std::string> words;
 std::vector<std::string> prevwords;
-
 // https://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
 double dvalue[11];
 double prevdvalue[11];
@@ -319,9 +318,9 @@ int main(int argc,char *argv[])
 			dvalue[i-1] = atof(words[i].c_str());
 		}
 		// increment timeOS
-		dvalue[0] = dvalue[0] + timeincr;
+		dvalue[0] = prevdvalue[0] + timeincr;
 		// increment timeRec
-		dvalue[1] = dvalue[1] + timeincr;
+		dvalue[1] = prevdvalue[1] + timeincr;
 		// and leave the timeSim alone
 		// for output to osrectxt file, we need to format the dvalues - saveCameraKeyframeAscii
 		// https://github.com/OpenSpace/OpenSpace/blob/95b4decccad31f7f703bcb8141bd854ba78c7938/src/interaction/sessionrecording.cpp#L839
@@ -332,10 +331,17 @@ int main(int argc,char *argv[])
 		destfileout << words[0] << ' ' 
 			<< dvalue[0] << ' '
 			<< dvalue[1] << ' ';
-		for (int i = 3; i < 11; i++) {
+		for (int i = 3; i < 13; i++) {
 			destfileout << words[i] << ' ';
 		}
-		destfileout << words[11] << std::endl;		
-	}
+		destfileout << words[13] << std::endl; // we don't want a space after this.
+		// update prevdvalue and prevwords
+		for (int i = 0; i < 11; i++) {
+			prevdvalue[i] = dvalue[i];
+		}
+		for (int i = 0; i < 14; i++) {
+			prevwords[i] = words[i];
+		}
+	} // end while loop for new keyframes
 	   
 } // end main
