@@ -332,7 +332,7 @@ int main(int argc,char *argv[])
 		destfileout << words[0] << ' ' 
 			<< dvalue[0] << ' '
 			<< dvalue[1] << ' ';
-		for (int i = 2; i < 11; i++) {
+		for (int i = 3; i < 11; i++) {
 			destfileout << words[i] << ' ';
 		}
 		destfileout << words[11] << std::endl;		
