@@ -317,6 +317,12 @@ int main(int argc,char *argv[])
 		for (int i = 1; i < 12; i++) {
 			dvalue[i-1] = atof(words[i].c_str());
 		}
+		// for output to osrectxt file, we need to format the dvalues - saveCameraKeyframeAscii
+		// https://github.com/OpenSpace/OpenSpace/blob/95b4decccad31f7f703bcb8141bd854ba78c7938/src/interaction/sessionrecording.cpp#L839
+		// calls saveHeaderAscii() - 
+		// line << times.timeOs << ' ';
+  		// line << times.timeRec << ' ';
+  		// line << std::fixed << std::setprecision(3) << times.timeSim << ' '
 		
 		
 	}
