@@ -205,7 +205,7 @@ int main(int argc,char *argv[])
 		FilterPatterns,
 		NULL);
 	try {
-		destfileout.open(SaveFileName, std::ofstream::out | std::ofstream::app);		
+		destfileout.open(SaveFileName, std::ofstream::out );		
 	} catch (int) {
 		std::cerr << "An error occured creating destination file."<< std::endl ; 
 		return false;
