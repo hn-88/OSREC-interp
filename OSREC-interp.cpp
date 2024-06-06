@@ -280,6 +280,7 @@ int main(int argc,char *argv[])
 			"Please Input", "Desired playback time till next keyframe in seconds", "100.0");
 			if (!lTmp) return 1 ;	
 		timeincrstr =  lTmp;
+		timeincr = atof(lTmp);
 		ignoreTime = tinyfd_messageBox(
 			"Ignore simulation time?" , 
 			"Ignore the next keyframe's simulation time?"  , 
@@ -317,18 +318,24 @@ int main(int argc,char *argv[])
 		for (int i = 1; i < 12; i++) {
 			dvalue[i-1] = atof(words[i].c_str());
 		}
+		// increment timeOS
+		dvalue[0] = dvalue[0] + timeincr;
+		// increment timeRec
+		dvalue[1] = dvalue[1] + timeincr;
+		// and leave the timeSim alone
 		// for output to osrectxt file, we need to format the dvalues - saveCameraKeyframeAscii
 		// https://github.com/OpenSpace/OpenSpace/blob/95b4decccad31f7f703bcb8141bd854ba78c7938/src/interaction/sessionrecording.cpp#L839
 		// calls saveHeaderAscii() - 
 		// line << times.timeOs << ' ';
   		// line << times.timeRec << ' ';
   		// line << std::fixed << std::setprecision(3) << times.timeSim << ' '
-		
-		
+		destfileout << words[0] << ' ' 
+			<< dvalue[0] << ' '
+			<< dvalue[1] << ' ';
+		for (int i = 2; i < 11; i++) {
+			destfileout << words[i] << ' ';
+		}
+		destfileout << words[11] << std::endl;		
 	}
-
-
-	
-	   
 	   
 } // end main
