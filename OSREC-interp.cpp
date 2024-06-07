@@ -343,8 +343,8 @@ int main(int argc,char *argv[])
 			prevwords[i] = words[i];
 		}
 		// and we need to update the time fields from the dvalue[0] and dvalue [1]
-		prevwords[1] = std::tostring(dvalue[0]);
-		prevwords[2] = std::tostring(dvalue[1]);
+		prevwords[1] = std::to_string(dvalue[0]);
+		prevwords[2] = std::to_string(dvalue[1]);
 	} // end while loop for new keyframes
 	   
 } // end main
