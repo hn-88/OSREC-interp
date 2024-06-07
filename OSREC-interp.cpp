@@ -291,7 +291,7 @@ int main(int argc,char *argv[])
 			"Since next keyframe's simulation time is ignored, time is being paused.", 
 			"ok", "info", 1);
 			//script 956.698 0 768100268.890  1 openspace.time.setPause(true)
-			destfileout << "script " << prevwords[1] << " " << prevwords[2] << " " << prevwords[3] << "  1 openspace.time.setPause(true)" << std::endl;
+			destfileout << HeaderScriptAscii << prevwords[1] << " " << prevwords[2] << " " << prevwords[3] << "  1 openspace.time.setPause(true)" << std::endl;
 		} else {
 			tinyfd_messageBox("Please Note", 
 			"Not yet implemented.", 
@@ -342,6 +342,9 @@ int main(int argc,char *argv[])
 		for (int i = 0; i < 14; i++) {
 			prevwords[i] = words[i];
 		}
+		// and we need to update the time fields from the dvalue[0] and dvalue [1]
+		prevwords[1] = std::tostring(dvalue[0]);
+		prevwords[2] = std::tostring(dvalue[1]);
 	} // end while loop for new keyframes
 	   
 } // end main
