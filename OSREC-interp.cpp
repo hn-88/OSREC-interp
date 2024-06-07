@@ -311,12 +311,12 @@ int main(int argc,char *argv[])
 		}
 		std::string nextKfstr = getLastCameraKfstring(pbFilename);
 		std::stringstream ss2(nextKfstr);
-		words = [];
+		std::vector<std::string> words2;
 		while(getline(ss2, word, ' ')) {
-			words.push_back(word);
+			words2.push_back(word);
 		}
 		for (int i = 1; i < 12; i++) {
-			dvalue[i-1] = atof(words[i].c_str());
+			dvalue[i-1] = atof(words2[i].c_str());
 		}
 		// increment timeOS
 		dvalue[0] = prevdvalue[0] + timeincr;
@@ -329,19 +329,19 @@ int main(int argc,char *argv[])
 		// line << times.timeOs << ' ';
   		// line << times.timeRec << ' ';
   		// line << std::fixed << std::setprecision(3) << times.timeSim << ' '
-		destfileout << words[0] << ' ' 
+		destfileout << words2[0] << ' ' 
 			<< dvalue[0] << ' '
 			<< dvalue[1] << ' ';
 		for (int i = 3; i < 13; i++) {
-			destfileout << words[i] << ' ';
+			destfileout << words2[i] << ' ';
 		}
-		destfileout << words[13] << std::endl; // we don't want a space after this.
+		destfileout << words2[13] << std::endl; // we don't want a space after this.
 		// update prevdvalue and prevwords
 		for (int i = 0; i < 11; i++) {
 			prevdvalue[i] = dvalue[i];
 		}
 		for (int i = 0; i < 14; i++) {
-			prevwords[i] = words[i];
+			prevwords[i] = words2[i];
 		}
 		// and we need to update the time fields from the dvalue[0] and dvalue [1]
 		prevwords[1] = std::to_string(dvalue[0]);
