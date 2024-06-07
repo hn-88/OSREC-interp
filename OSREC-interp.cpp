@@ -311,6 +311,7 @@ int main(int argc,char *argv[])
 		}
 		std::string nextKfstr = getLastCameraKfstring(pbFilename);
 		std::stringstream ss2(nextKfstr);
+		words = [];
 		while(getline(ss2, word, ' ')) {
 			words.push_back(word);
 		}
