@@ -291,7 +291,7 @@ int main(int argc,char *argv[])
 			"Since next keyframe's simulation time is ignored, time is being paused.", 
 			"ok", "info", 1);
 			//script 956.698 0 768100268.890  1 openspace.time.setPause(true)
-			destfileout << HeaderScriptAscii << prevwords[1] << " " << prevwords[2] << " " << prevwords[3] << "  1 openspace.time.setPause(true)" << std::endl;
+			destfileout << HeaderScriptAscii << " " << prevwords[1] << " " << prevwords[2] << " " << prevwords[3] << "  1 openspace.time.setPause(true)" << std::endl;
 		} else {
 			tinyfd_messageBox("Please Note", 
 			"Not yet implemented.", 
