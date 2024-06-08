@@ -260,7 +260,8 @@ int main(int argc,char *argv[])
 		prevdvalue[i-1] = atof(prevwords[i].c_str());
 	}
 
-	bool appendAnother, ignoreTime; 
+	bool appendAnother, ignoreTime;
+	bool ignoreAll=false; 
 	while(true) {
 		appendAnother = tinyfd_messageBox(
 		"Append next keyframe osrectxt" , 
@@ -280,22 +281,26 @@ int main(int argc,char *argv[])
 			if (!lTmp) return 1 ;	
 		timeincrstr =  lTmp;
 		timeincr = atof(lTmp);
+		if (ignoreAll) ifnoreTime = true;
+		else {
 		ignoreTime = tinyfd_messageBox(
 			"Ignore simulation time?" , 
 			"Ignore the next keyframe's simulation time?"  , 
 			"yesno" , 
 			"question" , 
 			1 ) ;
+		
 		if(ignoreTime) {
-			tinyfd_messageBox("Please Note", 
-			"Since next keyframe's simulation time is ignored, time is being paused.", 
-			"ok", "info", 1);
+			tinyfd_messageBox("Ignore for all?", 
+			"Ignore the every keyframe's simulation time during this run? If yes, you won't be asked again. If not, you will be asked for each keyframe.", 
+			"yesno", "question", 1);
 			//script 956.698 0 768100268.890  1 openspace.time.setPause(true)
-			destfileout << HeaderScriptAscii << " " << prevwords[1] << " " << prevwords[2] << " " << prevwords[3] << "  1 openspace.time.setPause(true)" << std::endl;
+			destfileout << HeaderScriptAscii << " " << prevdvalue[0] << " " << prevdvalue[1] << " " << prevdvalue[2] << "  1 openspace.time.setPause(true)" << std::endl;
 		} else {
 			tinyfd_messageBox("Please Note", 
 			"Not yet implemented.", 
 			"ok", "info", 1);
+		}
 		}
 		OpenFileName = tinyfd_openFileDialog(
 				"Open the next osrectxt file",
@@ -307,6 +312,9 @@ int main(int argc,char *argv[])
 		std::string pbFilename = OpenFileName;
 		bool validf = checkIfValidRecFile(pbFilename);
 		if (!validf) {
+			tinyfd_messageBox("Sorry!", 
+			"That doesn't seem to be a valid osrec file. Exiting.", 
+			"ok", "info", 1);
 			return false;
 		}
 		std::string nextKfstr = getLastCameraKfstring(pbFilename);
@@ -344,8 +352,8 @@ int main(int argc,char *argv[])
 			prevwords[i] = words2[i];
 		}
 		// and we need to update the time fields from the dvalue[0] and dvalue [1]
-		prevwords[1] = std::to_string(dvalue[0]);
-		prevwords[2] = std::to_string(dvalue[1]);
+		//prevwords[1] = std::to_string(dvalue[0]); // these values are no longer being used, so ignoring.
+		//prevwords[2] = std::to_string(dvalue[1]);
 	} // end while loop for new keyframes
 	   
 } // end main
