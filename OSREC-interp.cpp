@@ -281,7 +281,7 @@ int main(int argc,char *argv[])
 			if (!lTmp) return 1 ;	
 		timeincrstr =  lTmp;
 		timeincr = atof(lTmp);
-		if (ignoreAll) ifnoreTime = true;
+		if (ignoreAll) ignoreTime = true;
 		else {
 		ignoreTime = tinyfd_messageBox(
 			"Ignore simulation time?" , 
