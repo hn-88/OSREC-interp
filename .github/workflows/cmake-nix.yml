@@ -1,4 +1,4 @@
-name: CMake build
+name: CMake build for Linux
 
 on: workflow_dispatch
 
