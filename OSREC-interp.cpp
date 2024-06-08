@@ -291,11 +291,12 @@ int main(int argc,char *argv[])
 			1 ) ;
 		
 		if(ignoreTime) {
-			tinyfd_messageBox("Ignore for all?", 
+			ignoreAll = tinyfd_messageBox("Ignore for all?", 
 			"Ignore the every keyframe's simulation time during this run? If yes, you won't be asked again. If not, you will be asked for each keyframe.", 
 			"yesno", "question", 1);
 			//script 956.698 0 768100268.890  1 openspace.time.setPause(true)
-			destfileout << HeaderScriptAscii << " " << prevdvalue[0] << " " << prevdvalue[1] << " " << prevdvalue[2] << "  1 openspace.time.setPause(true)" << std::endl;
+			destfileout << HeaderScriptAscii << " " << prevdvalue[0] << " " << prevdvalue[1] << " " 
+				<< std::fixed << std::setprecision(3) << prevdvalue[2] << "  1 openspace.time.setPause(true)" << std::endl;
 		} else {
 			tinyfd_messageBox("Please Note", 
 			"Not yet implemented.", 
