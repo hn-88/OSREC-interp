@@ -183,6 +183,18 @@ std::string getLastCameraKfstring(std::string _playbackFilename) {
 	return tempstring;	
 }
 
+class CameraKeyFrame {
+  protected:
+	Timestamps ts;
+	std::string position;
+  public:
+	void incrementOnlyTwoTimestamps(double incrementval);
+	void incrementAllTimestamps(double incremValtimeRec, double incremValtimeSim);
+	void writeCamkfAscii(std::ofstream destfileout);
+	void populateCamkfAscii(std::string line);	
+    
+};
+
 
 
 int main(int argc,char *argv[])
