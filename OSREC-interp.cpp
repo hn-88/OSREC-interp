@@ -188,15 +188,42 @@ class CameraKeyFrame {
 	Timestamps ts;
 	std::string position;
   public:
-	void incrementOnlyTwoTimestamps(double incrementval){
+	void incrementOnlyTwoTimestamps(double incrementval) {
 		ts.timeOs  += incrementval;
 		ts.timeRec += incrementval;
 	};
-	void incrementAllTimestamps(double incremValtimeRec, double incremValtimeSim);
-	void writeCamkfAscii(std::ofstream destfileout);
-	void populateCamkfAscii(std::string line);	
+	void incrementAllTimestamps(double incremValtimeRec, double incremValtimeSim) {
+		ts.timeOs  += incremValtimeRec;
+		ts.timeRec += incremValtimeRec;
+		ts.timeSim += incremValtimeSim;
+	};
+	void setTimestampsFrom(CameraKeyFrame kf) {
+		ts.timeOs  = kf.ts.timeOs;
+		ts.timeRec = kf.ts.timeRec;
+		ts.timeSim = kf.ts.timeSim;
+		
+	};
+	void writeCamkfAscii(std::ofstream destfileout) {
+		destfileout << HeaderCameraAscii << " " << ts.timeOs << " " << ts.timeRec << " " 
+			<< std::fixed << std::setprecision(3) << ts.timeSim << " " << position << std::endl;
+	};
+	void populateCamkfAscii(std::string line) {
+		std::stringstream ss(line);
+		std::string w;
+		std::vector<std::string> vwords;
+		while(getline(ss, w, ' ')) {
+			vwords.push_back(w);
+		}
+		ts.timeOs  = atof(vwords[1].c_str());
+		ts.timeRec = atof(vwords[2].c_str());
+		ts.timeSim = atof(vwords[3].c_str());
+		postion = vwords[4];
+		for (int i = 5; i < vwords.size(); i++ {
+			position += " " + vwords[i];
+		}		
+	};	// end populateCamkfAscii
     
-};
+}; // end class CameraKeyFrame
 
 
 
