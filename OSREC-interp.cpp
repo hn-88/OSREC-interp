@@ -218,7 +218,7 @@ class CameraKeyFrame {
 		ts.timeRec = atof(vwords[2].c_str());
 		ts.timeSim = atof(vwords[3].c_str());
 		postion = vwords[4];
-		for (int i = 5; i < vwords.size(); i++ {
+		for (int i = 5; i < vwords.size(); i++) {
 			position += " " + vwords[i];
 		}		
 	};	// end populateCamkfAscii
