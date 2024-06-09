@@ -188,7 +188,10 @@ class CameraKeyFrame {
 	Timestamps ts;
 	std::string position;
   public:
-	void incrementOnlyTwoTimestamps(double incrementval);
+	void incrementOnlyTwoTimestamps(double incrementval){
+		ts.timeOs  += incrementval;
+		ts.timeRec += incrementval;
+	};
 	void incrementAllTimestamps(double incremValtimeRec, double incremValtimeSim);
 	void writeCamkfAscii(std::ofstream destfileout);
 	void populateCamkfAscii(std::string line);	
