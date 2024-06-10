@@ -184,10 +184,10 @@ std::string getLastCameraKfstring(std::string _playbackFilename) {
 }
 
 class CameraKeyFrame {
-  protected:
+  public:
 	Timestamps ts;
 	std::string position;
-  public:
+  
 	void incrementOnlyTwoTimestamps(double incrementval) {
 		ts.timeOs  += incrementval;
 		ts.timeRec += incrementval;
@@ -204,6 +204,7 @@ class CameraKeyFrame {
 		
 	};
 	void writeCamkfAscii(std::ofstream destfileout) {
+		// https://github.com/OpenSpace/OpenSpace/blob/95b4decccad31f7f703bcb8141bd854ba78c7938/src/interaction/sessionrecording.cpp#L839
 		destfileout << HeaderCameraAscii << " " << ts.timeOs << " " << ts.timeRec << " " 
 			<< std::fixed << std::setprecision(3) << ts.timeSim << " " << position << std::endl;
 	};
@@ -222,10 +223,16 @@ class CameraKeyFrame {
 			position += " " + vwords[i];
 		}		
 	};	// end populateCamkfAscii
+	void copyTo(CameraKeyFrame kf) {
+		kf.ts.timeOs  = ts.timeOs;
+		kf.ts.timeRec = ts.timeRec;
+		kf.ts.timeSim = ts.timeSim;
+		kf.position = position.c_str();
+	};
     
 }; // end class CameraKeyFrame
 
-
+CameraKeyFrame prevkf, kf;
 
 int main(int argc,char *argv[])
 {
@@ -295,17 +302,7 @@ int main(int argc,char *argv[])
 		
 	}
 	// tempstring now contains the last camera keyframe
-	// separate it out to get each of the "words" of the line
-	// words[0] = the string camera,
-	// words[1] = string serialized number of seconds since openspace has been launched
-	// etc as in https://docs.openspaceproject.com/en/releases-v0.20.0/content/session-recording.html#ascii-file-format
-	std::stringstream ss(tempstring);
-	while(getline(ss, word, ' ')) {
-		prevwords.push_back(word);
-	}
-	for (int i = 1; i < 12; i++) {
-		prevdvalue[i-1] = atof(prevwords[i].c_str());
-	}
+	prevkf.populateCamkfAscii(tempstring);
 
 	bool appendAnother, ignoreTime;
 	bool ignoreAll=false; 
@@ -342,8 +339,8 @@ int main(int argc,char *argv[])
 			"Ignore the every keyframe's simulation time during this run? If yes, you won't be asked again. If not, you will be asked for each keyframe.", 
 			"yesno", "question", 1);
 			//script 956.698 0 768100268.890  1 openspace.time.setPause(true)
-			destfileout << HeaderScriptAscii << " " << prevdvalue[0] << " " << prevdvalue[1] << " " 
-				<< std::fixed << std::setprecision(3) << prevdvalue[2] << "  1 openspace.time.setPause(true)" << std::endl;
+			destfileout << HeaderScriptAscii << " " << prevkf.ts.timeOs << " " << prevkf.ts.timeRec << " " 
+				<< std::fixed << std::setprecision(3) << prevkf.ts.timeSim << "  1 openspace.time.setPause(true)" << std::endl;
 		} else {
 			tinyfd_messageBox("Please Note", 
 			"Not yet implemented.", 
@@ -366,42 +363,17 @@ int main(int argc,char *argv[])
 			return false;
 		}
 		std::string nextKfstr = getLastCameraKfstring(pbFilename);
-		std::stringstream ss2(nextKfstr);
-		std::vector<std::string> words2;
-		while(getline(ss2, word, ' ')) {
-			words2.push_back(word);
-		}
-		for (int i = 1; i < 12; i++) {
-			dvalue[i-1] = atof(words2[i].c_str());
-		}
-		// increment timeOS
-		dvalue[0] = prevdvalue[0] + timeincr;
-		// increment timeRec
-		dvalue[1] = prevdvalue[1] + timeincr;
-		// and leave the timeSim alone
-		// for output to osrectxt file, we need to format the dvalues - saveCameraKeyframeAscii
-		// https://github.com/OpenSpace/OpenSpace/blob/95b4decccad31f7f703bcb8141bd854ba78c7938/src/interaction/sessionrecording.cpp#L839
-		// calls saveHeaderAscii() - 
-		// line << times.timeOs << ' ';
-  		// line << times.timeRec << ' ';
-  		// line << std::fixed << std::setprecision(3) << times.timeSim << ' '
-		destfileout << words2[0] << ' ' 
-			<< dvalue[0] << ' '
-			<< dvalue[1] << ' ';
-		for (int i = 3; i < 13; i++) {
-			destfileout << words2[i] << ' ';
-		}
-		destfileout << words2[13] << std::endl; // we don't want a space after this.
-		// update prevdvalue and prevwords
-		for (int i = 0; i < 11; i++) {
-			prevdvalue[i] = dvalue[i];
-		}
-		for (int i = 0; i < 14; i++) {
-			prevwords[i] = words2[i];
-		}
-		// and we need to update the time fields from the dvalue[0] and dvalue [1]
-		//prevwords[1] = std::to_string(dvalue[0]); // these values are no longer being used, so ignoring.
-		//prevwords[2] = std::to_string(dvalue[1]);
+		kf.populateCamkfAscii(nextKfstr);
+		// set timeOS & timeRec to previous keyframe's values
+		kf.setTimestampsFrom(prevkf);
+		// increment timeOS & timeRec
+		kf.incrementOnlyTwoTimestamps(timeincr);
+		// write the kf out to destfile
+		kf.writeCamkfAscii(destfileout);
+		
+		// update prevkf
+		kf.copyTo(prevkf);
+		
 	} // end while loop for new keyframes
 	   
 } // end main
