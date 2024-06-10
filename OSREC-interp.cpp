@@ -163,6 +163,7 @@ bool checkIfValidRecFile(std::string _playbackFilename) {
 	        return false;
 	    }
 	_playbackFile.close();
+	return true;
 	
 }
 
