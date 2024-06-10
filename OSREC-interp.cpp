@@ -203,10 +203,12 @@ class CameraKeyFrame {
 		ts.timeSim = kf.ts.timeSim;
 		
 	};
-	void writeCamkfAscii(std::ofstream destfileout) {
+	std::string getCamkfAscii() {
 		// https://github.com/OpenSpace/OpenSpace/blob/95b4decccad31f7f703bcb8141bd854ba78c7938/src/interaction/sessionrecording.cpp#L839
-		destfileout << HeaderCameraAscii << " " << ts.timeOs << " " << ts.timeRec << " " 
+		std::stringstream ss;
+		ss << HeaderCameraAscii << " " << ts.timeOs << " " << ts.timeRec << " " 
 			<< std::fixed << std::setprecision(3) << ts.timeSim << " " << position << std::endl;
+		return ss.str();
 	};
 	void populateCamkfAscii(std::string line) {
 		std::stringstream ss(line);
@@ -369,7 +371,7 @@ int main(int argc,char *argv[])
 		// increment timeOS & timeRec
 		kf.incrementOnlyTwoTimestamps(timeincr);
 		// write the kf out to destfile
-		kf.writeCamkfAscii(destfileout);
+		destfileout << kf.getCamkfAscii();
 		
 		// update prevkf
 		kf.copyTo(prevkf);
