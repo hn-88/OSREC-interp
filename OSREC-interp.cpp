@@ -235,6 +235,10 @@ int main(int argc,char *argv[])
 	std::cout << "https://github.com/hn-88/openspace-scripts/wiki" << std::endl;
 	std::cout << "https://docs.openspaceproject.com/en/releases-v0.20.0/content/session-recording.html#ascii-file-format" << std::endl;
 	std::cout << std::endl;
+
+	tinyfd_messageBox("Please Note", 
+			"First input the destination OSRECTXT file. This tool then takes an initial osrectxt file, appends to it camera keyframes from subsequent osrectxt files with suitable interpolation, and saves to the destination OSRECTXT file.", 
+			"ok", "info", 1);
 	
 	char const * SaveFileName = "";
 	char const * OpenFileName = "";
