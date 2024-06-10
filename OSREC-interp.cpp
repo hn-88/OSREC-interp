@@ -367,10 +367,13 @@ int main(int argc,char *argv[])
 		}
 		std::string nextKfstr = getLastCameraKfstring(pbFilename);
 		kf.populateCamkfAscii(nextKfstr);
+		std::cout << "Populate called, kf is " << kf.getCamkfAscii();
 		// set timeOS & timeRec to previous keyframe's values
 		kf.setTimestampsFrom(prevkf);
+		std::cout << "setTimestamps called, kf is " << kf.getCamkfAscii();
 		// increment timeOS & timeRec
 		kf.incrementOnlyTwoTimestamps(timeincr);
+		std::cout << "incrementOnlyTwo called, kf is " << kf.getCamkfAscii();
 		// write the kf out to destfile
 		destfileout << kf.getCamkfAscii();
 		
