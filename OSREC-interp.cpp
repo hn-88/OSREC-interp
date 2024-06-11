@@ -227,7 +227,9 @@ class CameraKeyFrame {
 		}		
 	};	// end populateCamkfAscii
 	void copyTo(CameraKeyFrame kf) {
+		std::cout << "debugging copyTo: LHS timeOS=" << kf.ts.timeOs << " RHS timeOS=" << ts.timeOS << std::endl;
 		kf.ts.timeOs  = ts.timeOs;
+		std::cout << "after assignment operator: LHS timeOS=" << kf.ts.timeOs << " RHS timeOS=" << ts.timeOS << std::endl;
 		kf.ts.timeRec = ts.timeRec;
 		kf.ts.timeSim = ts.timeSim;
 		kf.position = position.c_str();
