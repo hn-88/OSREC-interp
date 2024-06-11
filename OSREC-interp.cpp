@@ -235,7 +235,7 @@ class CameraKeyFrame {
     
 }; // end class CameraKeyFrame
 
-CameraKeyFrame prevkf, kf;
+CameraKeyFrame prevkf;
 
 int main(int argc,char *argv[])
 {
@@ -322,6 +322,7 @@ int main(int argc,char *argv[])
 		}
 		// else, append the next keyframe, that is
 		// the last camera keyframe of next osrectxt file
+		CameraKeyFrame kf;
 		char const * lTmp;
 		lTmp = tinyfd_inputBox(
 			"Please Input", "Desired playback time till next keyframe in seconds", "100.0");
