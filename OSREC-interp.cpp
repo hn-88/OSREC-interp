@@ -379,7 +379,12 @@ int main(int argc,char *argv[])
 		destfileout << kf.getCamkfAscii();
 		
 		// update prevkf
+		//debug
+		std::cout << "before copyTo kf is " << kf.getCamkfAscii();
+		std::cout << "before copyTo prevkf is " << prevkf.getCamkfAscii();
 		kf.copyTo(prevkf);
+		std::cout << "after copyTo kf is " << kf.getCamkfAscii();
+		std::cout << "after copyTo prevkf is " << prevkf.getCamkfAscii();
 		
 	} // end while loop for new keyframes
 	   
