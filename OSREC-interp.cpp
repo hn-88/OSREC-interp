@@ -234,6 +234,14 @@ class CameraKeyFrame {
 		kf.ts.timeSim = ts.timeSim;
 		kf.position = position.c_str();
 	};
+	void copyFrom(CameraKeyFrame kf) {
+		std::cout << "debugging copyTo: LHS timeOS=" << kf.ts.timeOs << " RHS timeOS=" << ts.timeOs << std::endl;
+		ts.timeOs  = kf.ts.timeOs;
+		std::cout << "after assignment operator: LHS timeOS=" << kf.ts.timeOs << " RHS timeOS=" << ts.timeOs << std::endl;
+		ts.timeRec = kf.ts.timeRec;
+		ts.timeSim = kf.ts.timeSim;
+		position = kf.position.c_str();
+	};
     
 }; // end class CameraKeyFrame
 
@@ -382,11 +390,11 @@ int main(int argc,char *argv[])
 		
 		// update prevkf
 		//debug
-		std::cout << "before copyTo kf is " << kf.getCamkfAscii();
-		std::cout << "before copyTo prevkf is " << prevkf.getCamkfAscii();
-		kf.copyTo(prevkf);
-		std::cout << "after copyTo kf is " << kf.getCamkfAscii();
-		std::cout << "after copyTo prevkf is " << prevkf.getCamkfAscii();
+		std::cout << "before copy kf is " << kf.getCamkfAscii();
+		std::cout << "before copy prevkf is " << prevkf.getCamkfAscii();
+		prevkf.copyFrom(kf);
+		std::cout << "after copyFrom kf is " << kf.getCamkfAscii();
+		std::cout << "after copyFrom prevkf is " << prevkf.getCamkfAscii();
 		
 	} // end while loop for new keyframes
 	   
