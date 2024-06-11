@@ -226,18 +226,18 @@ class CameraKeyFrame {
 			position += " " + vwords[i];
 		}		
 	};	// end populateCamkfAscii
-	void copyTo(CameraKeyFrame kf) {
-		std::cout << "debugging copyTo: LHS timeOS=" << kf.ts.timeOs << " RHS timeOS=" << ts.timeOs << std::endl;
-		kf.ts.timeOs  = ts.timeOs;
-		std::cout << "after assignment operator: LHS timeOS=" << kf.ts.timeOs << " RHS timeOS=" << ts.timeOs << std::endl;
-		kf.ts.timeRec = ts.timeRec;
-		kf.ts.timeSim = ts.timeSim;
-		kf.position = position.c_str();
-	};
+	// copyTo does not work. copyFrom works. Probably due to not passing by reference / passing by value, which would create a temp copy of the var
+	// https://www.geeksforgeeks.org/cpp-functions-pass-by-reference/
+	// void copyTo(CameraKeyFrame kf) {
+	// 	std::cout << "debugging copyTo: LHS timeOS=" << kf.ts.timeOs << " RHS timeOS=" << ts.timeOs << std::endl;
+	// 	kf.ts.timeOs  = ts.timeOs;
+	// 	std::cout << "after assignment operator: LHS timeOS=" << kf.ts.timeOs << " RHS timeOS=" << ts.timeOs << std::endl;
+	// 	kf.ts.timeRec = ts.timeRec;
+	// 	kf.ts.timeSim = ts.timeSim;
+	// 	kf.position = position.c_str();
+	// };
 	void copyFrom(CameraKeyFrame kf) {
-		std::cout << "debugging copyTo: LHS timeOS=" << kf.ts.timeOs << " RHS timeOS=" << ts.timeOs << std::endl;
 		ts.timeOs  = kf.ts.timeOs;
-		std::cout << "after assignment operator: LHS timeOS=" << kf.ts.timeOs << " RHS timeOS=" << ts.timeOs << std::endl;
 		ts.timeRec = kf.ts.timeRec;
 		ts.timeSim = kf.ts.timeSim;
 		position = kf.position.c_str();
@@ -255,6 +255,7 @@ int main(int argc,char *argv[])
 	std::cout << "https://github.com/hn-88/openspace-scripts/wiki" << std::endl;
 	std::cout << "https://docs.openspaceproject.com/en/releases-v0.20.0/content/session-recording.html#ascii-file-format" << std::endl;
 	std::cout << std::endl;
+	std::cout << "Documentation is at https://github.com/hn-88/OSREC-interp/wiki" << std::endl;
 
 	tinyfd_messageBox("Please Note", 
 			"First input the destination OSRECTXT file. This tool then takes an initial osrectxt file, appends to it camera keyframes from subsequent osrectxt files with suitable interpolation, and saves to the destination OSRECTXT file.", 
@@ -378,23 +379,15 @@ int main(int argc,char *argv[])
 		}
 		std::string nextKfstr = getLastCameraKfstring(pbFilename);
 		kf.populateCamkfAscii(nextKfstr);
-		std::cout << "Populate called, kf is " << kf.getCamkfAscii();
 		// set timeOS & timeRec to previous keyframe's values
 		kf.setTimestampsFrom(prevkf);
-		std::cout << "setTimestamps called, kf is " << kf.getCamkfAscii();
 		// increment timeOS & timeRec
 		kf.incrementOnlyTwoTimestamps(timeincr);
-		std::cout << "incrementOnlyTwo called, kf is " << kf.getCamkfAscii();
 		// write the kf out to destfile
 		destfileout << kf.getCamkfAscii();
 		
 		// update prevkf
-		//debug
-		std::cout << "before copy kf is " << kf.getCamkfAscii();
-		std::cout << "before copy prevkf is " << prevkf.getCamkfAscii();
 		prevkf.copyFrom(kf);
-		std::cout << "after copyFrom kf is " << kf.getCamkfAscii();
-		std::cout << "after copyFrom prevkf is " << prevkf.getCamkfAscii();
 		
 	} // end while loop for new keyframes
 	   
