@@ -2,7 +2,7 @@
 Tool for concatenating and interpolating between OpenSpace camera keyframes.
 
 # Build instructions for any system with g++
-Just run g++ -o OSRECinterp.bin OSREC-interp.cpp tinyfiledialogs.c
+Just run `g++ -o OSRECinterp.bin OSREC-interp.cpp tinyfiledialogs.c`
 
 # Build instructions for Mac and Linux using CMake
 1. Install CMake
