@@ -275,7 +275,7 @@ class ScriptKeyFrame {
 	};
 	
 	void setscriptstring(std::string s) {
-		str = s.c_str();
+		scr = s.c_str();
 	};
     
 }; // end class ScriptKeyFrame
