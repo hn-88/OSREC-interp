@@ -202,7 +202,7 @@ class CameraKeyFrame {
 	void setTimestampsFrom(CameraKeyFrame kf) {
 		ts.timeOs  = kf.ts.timeOs;
 		ts.timeRec = kf.ts.timeRec;
-		ts.timeSim = kf.ts.timeSim;
+		//ts.timeSim = kf.ts.timeSim; this should not be set, since we would need it if !ignoreTime
 		
 	};
 	std::string getCamkfAscii() {
@@ -264,13 +264,15 @@ class ScriptKeyFrame {
 		ts.timeOs  = kf.ts.timeOs;
 		ts.timeRec = kf.ts.timeRec;
 		ts.timeSim = kf.ts.timeSim;
-		
 	};
 	std::string getScrkfAscii() {
 		// https://github.com/OpenSpace/OpenSpace/blob/95b4decccad31f7f703bcb8141bd854ba78c7938/src/interaction/sessionrecording.cpp#L839
 		std::stringstream ss;
 		ss << HeaderCameraAscii << " " << ts.timeOs << " " << ts.timeRec << " " 
 			<< std::fixed << std::setprecision(3) << ts.timeSim << " " << scr << std::endl;
+		// which should look like
+		// script 188.098 0 768100269.188  1 openspace.time.setPause(true)
+		// script 188.098 0 768100269.188  1 openspace.time.setDeltaTime(-3600)
 		return ss.str();
 	};
 	
@@ -392,9 +394,9 @@ int main(int argc,char *argv[])
 			destfileout << HeaderScriptAscii << " " << prevkf.ts.timeOs << " " << prevkf.ts.timeRec << " " 
 				<< std::fixed << std::setprecision(3) << prevkf.ts.timeSim << "  1 openspace.time.setPause(true)" << std::endl;
 		} else {
-			tinyfd_messageBox("Please Note", 
-			"Not yet implemented.", 
-			"ok", "info", 1);
+			// do not ignore simu time
+			destfileout << HeaderScriptAscii << " " << prevkf.ts.timeOs << " " << prevkf.ts.timeRec << " " 
+				<< std::fixed << std::setprecision(3) << prevkf.ts.timeSim << "  1 openspace.time.setPause(false)" << std::endl;
 		}
 		}
 		OpenFileName = tinyfd_openFileDialog(
@@ -416,6 +418,14 @@ int main(int argc,char *argv[])
 		kf.populateCamkfAscii(nextKfstr);
 		// set timeOS & timeRec to previous keyframe's values
 		kf.setTimestampsFrom(prevkf);
+		if (!ignoreTime) {
+			double timeRecdiff = timeincr;
+			double timeSimdiff = kf.ts.timeSim - prevkf.ts.timeSim;
+			int deltatime = (int)(timeSimdiff / timeRecdiff);
+			destfileout << HeaderScriptAscii << " " << prevkf.ts.timeOs << " " << prevkf.ts.timeRec << " " 
+				<< std::fixed << std::setprecision(3) << prevkf.ts.timeSim << "  1 openspace.time.setDeltaTime(" << deltatime << ")" << std::endl;
+			
+		}
 		// increment timeOS & timeRec
 		kf.incrementOnlyTwoTimestamps(timeincr);
 		// write the kf out to destfile
