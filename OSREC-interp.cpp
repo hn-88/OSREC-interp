@@ -268,7 +268,7 @@ class ScriptKeyFrame {
 	std::string getScrkfAscii() {
 		// https://github.com/OpenSpace/OpenSpace/blob/95b4decccad31f7f703bcb8141bd854ba78c7938/src/interaction/sessionrecording.cpp#L839
 		std::stringstream ss;
-		ss << HeaderCameraAscii << " " << ts.timeOs << " " << ts.timeRec << " " 
+		ss << HeaderScriptAscii << " " << ts.timeOs << " " << ts.timeRec << " " 
 			<< std::fixed << std::setprecision(3) << ts.timeSim << " " << scr << std::endl;
 		// which should look like
 		// script 188.098 0 768100269.188  1 openspace.time.setPause(true)
