@@ -276,7 +276,7 @@ class ScriptKeyFrame {
 		return ss.str();
 	};
 	
-	void setscriptstring(std::string s) {
+	void setScriptString(std::string s) {
 		scr = s.c_str();
 	};
     
@@ -422,8 +422,11 @@ int main(int argc,char *argv[])
 			double timeRecdiff = timeincr;
 			double timeSimdiff = kf.ts.timeSim - prevkf.ts.timeSim;
 			int deltatime = (int)(timeSimdiff / timeRecdiff);
-			destfileout << HeaderScriptAscii << " " << prevkf.ts.timeOs << " " << prevkf.ts.timeRec << " " 
-				<< std::fixed << std::setprecision(3) << prevkf.ts.timeSim << "  1 openspace.time.setDeltaTime(" << deltatime << ")" << std::endl;
+			std::string scriptstring = "1 openspace.time.setDeltaTime(" + std::to_string(deltatime) + ")";
+			ScriptKeyFrame skf;
+			skf.setTimestampsFrom(prevkf);
+			skf.setScriptString(scriptstring);
+			destfileout << skf.getScrkfAscii();
 			
 		}
 		// increment timeOS & timeRec
