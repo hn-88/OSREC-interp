@@ -184,6 +184,44 @@ std::string getLastCameraKfstring(std::string _playbackFilename) {
 	return tempstring;	
 }
 
+struct CameraPos {
+	double xpos;
+	double ypos;
+	double zpos;
+	double xrot;
+	double yrot;
+	double zrot;
+	double wrot;
+	double scale;	
+};
+
+struct XYZ {
+	double x;
+	double y;
+	double z;
+};
+
+struct RThetaPhi {
+	double r;
+	double theta;
+	double phi;
+};
+
+RThetaPhi toSpherical (XYZ p) {
+	RThetaPhi a;
+	a.r = p.x;
+	a.theta = p.y;
+	a.phi = p.z;
+	return a;
+}
+
+XYZ toCartesian (RThetaPhi a) {
+	XYZ p;
+	p.x = a.r;
+	p.y = a.theta;
+	p.z = a.phi;
+	return p;
+}
 
 class CameraKeyFrame {
   public:
@@ -243,6 +281,15 @@ class CameraKeyFrame {
 		ts.timeSim = kf.ts.timeSim;
 		position = kf.position.c_str();
 	};
+	CameraPos getCameraPos() {
+		CameraPos pos;
+		// populate pos by splitting the position string of CameraKeyFrame
+		
+		return pos;
+	};
+	void setCameraPos(CameraPos pos) {
+		// set the postition string from the data in struct pos 
+	};
     
 }; // end class CameraKeyFrame
 
@@ -281,6 +328,11 @@ class ScriptKeyFrame {
 	};
     
 }; // end class ScriptKeyFrame
+
+void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
+	// optional - add a check to make sure kf1 and kf2 have the same object in Focus
+	
+}
 
 CameraKeyFrame prevkf;
 
