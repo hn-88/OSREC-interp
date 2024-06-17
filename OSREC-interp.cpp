@@ -356,7 +356,9 @@ int main(int argc,char *argv[])
 	prevkf.populateCamkfAscii(tempstring);
 
 	bool appendAnother, ignoreTime;
-	bool ignoreAll=false; 
+	bool ignoreAll=false;
+	bool keepSimTimeforAll=false;
+	bool donotaskagain=false;
 	while(true) {
 		appendAnother = tinyfd_messageBox(
 		"Append next keyframe osrectxt" , 
@@ -377,8 +379,12 @@ int main(int argc,char *argv[])
 			if (!lTmp) return 1 ;	
 		timeincrstr =  lTmp;
 		timeincr = atof(lTmp);
-		if (ignoreAll) ignoreTime = true;
+		if (ignoreAll) {
+			ignoreTime = true;
+		}			
 		else {
+			ignoreTime = false;
+			if (!donotaskagain)
 		ignoreTime = tinyfd_messageBox(
 			"Ignore simulation time?" , 
 			"Ignore the next keyframe's simulation time?"  , 
@@ -386,17 +392,32 @@ int main(int argc,char *argv[])
 			"question" , 
 			1 ) ;
 		
-		if(ignoreTime) {
+		if(ignoreTime && !donotaskagain) {
 			ignoreAll = tinyfd_messageBox("Ignore for all?", 
-			"Ignore the every keyframe's simulation time during this run? If yes, you won't be asked again. If not, you will be asked for each keyframe.", 
+			"Ignore every keyframe's simulation time during this run? If yes, you won't be asked again. If not, you will be asked for each keyframe.", 
 			"yesno", "question", 1);
+			if (ignoreAll) donotaskagain = true;
 			//script 956.698 0 768100268.890  1 openspace.time.setPause(true)
-			destfileout << HeaderScriptAscii << " " << prevkf.ts.timeOs << " " << prevkf.ts.timeRec << " " 
-				<< std::fixed << std::setprecision(3) << prevkf.ts.timeSim << "  1 openspace.time.setPause(true)" << std::endl;
+			std::string scriptstring = "1 openspace.time.setPause(true)";
+			ScriptKeyFrame skf;
+			skf.setTimestampsFrom(prevkf);
+			skf.setScriptString(scriptstring);
+			destfileout << skf.getScrkfAscii();
 		} else {
 			// do not ignore simu time
-			destfileout << HeaderScriptAscii << " " << prevkf.ts.timeOs << " " << prevkf.ts.timeRec << " " 
-				<< std::fixed << std::setprecision(3) << prevkf.ts.timeSim << "  1 openspace.time.setPause(false)" << std::endl;
+			if(!ignoreTime && !donotaskagain)
+			keepSimTimeforAll = tinyfd_messageBox("Keep Sim Time for all?", 
+			"Keep every keyframe's simulation time during this run? If yes, you won't be asked again. If not, you will be asked for each keyframe.", 
+			"yesno", "question", 1);
+			if (keepSimTimeforAll) {
+				donotaskagain = true;				
+			}
+
+			std::string scriptstring = "1 openspace.time.setPause(false)";
+			ScriptKeyFrame skf;
+			skf.setTimestampsFrom(prevkf);
+			skf.setScriptString(scriptstring);
+			destfileout << skf.getScrkfAscii();			
 		}
 		}
 		OpenFileName = tinyfd_openFileDialog(
