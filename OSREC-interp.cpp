@@ -217,9 +217,9 @@ RThetaPhi toSpherical (XYZ p) {
 
 XYZ toCartesian (RThetaPhi a) {
 	XYZ p;
-	p.x = a.r*std::sin(r.phi)*std::cos(r.theta);
-	p.y = a.r*std::sin(r.phi)*std::sin(r.theta);
-	p.z = a.r*std::cos(a.phi);
+	p.x = a.r * std::sin(a.phi) * std::cos(a.theta);
+	p.y = a.r * std::sin(a.phi) * std::sin(a.theta);
+	p.z = a.r * std::cos(a.phi);
 	return p;
 }
 
