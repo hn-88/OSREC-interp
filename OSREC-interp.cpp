@@ -212,7 +212,7 @@ RThetaPhi toSpherical (XYZ p) {
 	// https://neutrium.net/mathematics/converting-between-spherical-and-cartesian-co-ordinate-systems/
 	RThetaPhi a;
 	a.r 		= std::sqrt(p.x*p.x + p.y*p.y + p.z*p.z);
-	a.phi 		= std::atan2(p.y, a.r);
+	a.phi 		= std::acos(p.y / a.r);
 	a.theta 	= std::atan2(p.y, p.x);	
 	return a;
 }
