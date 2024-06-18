@@ -288,6 +288,23 @@ class CameraKeyFrame {
 	CameraPos getCameraPos() {
 		CameraPos pos;
 		// populate pos by splitting the position string of CameraKeyFrame
+		std::stringstream ss(position); // convert the position string to a ss to split it
+		std::string w;
+		std::vector<std::string> vwords;
+		while(getline(ss, w, ' ')) {
+			vwords.push_back(w);
+		}
+		// https://docs.openspaceproject.com/en/releases-v0.20.0/content/session-recording.html#ascii-file-format
+		pos.xpos = atof(vwords[0].c_str());
+		pos.ypos = atof(vwords[1].c_str());
+		pos.zpos = atof(vwords[2].c_str());
+
+		pos.xrot = atof(vwords[3].c_str());
+		pos.yrot = atof(vwords[4].c_str());
+		pos.zrot = atof(vwords[5].c_str());
+		pos.wrot = atof(vwords[6].c_str());
+
+		pos.scale = atof(vwords[7].c_str());
 		
 		return pos;
 	};
@@ -335,6 +352,7 @@ class ScriptKeyFrame {
 
 void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	// optional - add a check to make sure kf1 and kf2 have the same object in Focus
+	// add 99 points between kf1 and kf2 equi-spaced in time and spherical co-ords 
 	
 }
 
@@ -349,18 +367,6 @@ int main(int argc,char *argv[])
 	std::cout << "https://docs.openspaceproject.com/en/releases-v0.20.0/content/session-recording.html#ascii-file-format" << std::endl;
 	std::cout << std::endl;
 	std::cout << "Documentation is at https://github.com/hn-88/OSREC-interp/wiki" << std::endl;
-
-	RThetaPhi a;
-	XYZ p, p2;
-	p.x = 10000;
-	p.y = 20000;
-	p.z = 60000;
-	std::cout << "p = " << p.x << " " << p.y << " " << p.z << std::endl;
-	a = toSpherical(p);
-	std::cout << "a = " << a.r << " " << a.theta << " " << a.phi << std::endl;
-	p2 = toCartesian(a);
-	std::cout << "p2 = " << p2.x << " " << p2.y << " " << p2.z << std::endl;
-	
 
 	tinyfd_messageBox("Please Note", 
 			"First input the destination OSRECTXT file. This tool then takes an initial osrectxt file, appends to it camera keyframes from subsequent osrectxt files with suitable interpolation, and saves to the destination OSRECTXT file.", 
