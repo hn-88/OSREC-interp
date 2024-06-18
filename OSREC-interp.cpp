@@ -209,17 +209,17 @@ struct RThetaPhi {
 
 RThetaPhi toSpherical (XYZ p) {
 	RThetaPhi a;
-	a.r = p.x;
-	a.theta = p.y;
-	a.phi = p.z;
+	a.r 		= std::sqrt(p.x*p.x + p.y*p.y + p.z*p.z);
+	a.phi 		= std::atan2(p.x,p.z);
+	a.theta 	= std::atan2(std::hypot(p.x,p.z), p.y);	
 	return a;
 }
 
 XYZ toCartesian (RThetaPhi a) {
 	XYZ p;
-	p.x = a.r;
-	p.y = a.theta;
-	p.z = a.phi;
+	p.x = a.r*std::sin(r.phi)*std::cos(r.theta);
+	p.y = a.r*std::sin(r.phi)*std::sin(r.theta);
+	p.z = a.r*std::cos(a.phi);
 	return p;
 }
 
@@ -346,6 +346,18 @@ int main(int argc,char *argv[])
 	std::cout << std::endl;
 	std::cout << "Documentation is at https://github.com/hn-88/OSREC-interp/wiki" << std::endl;
 
+	RThetaPhi a;
+	XYZ p, p2;
+	p.x = 10000;
+	p.y = 20000;
+	p.z = 60000;
+	std::cout << "p = " << p.x << " " << p.y << " " << p.z << std::endl;
+	a = toSpherical(p);
+	std::cout << "a = " << a.r << " " << a.theta << " " << a.phi << std::endl;
+	p2 = toCartesian(a);
+	std::cout << "p2 = " << p2.x << " " << p2.y << " " << p2.z << std::endl;
+	
+
 	tinyfd_messageBox("Please Note", 
 			"First input the destination OSRECTXT file. This tool then takes an initial osrectxt file, appends to it camera keyframes from subsequent osrectxt files with suitable interpolation, and saves to the destination OSRECTXT file.", 
 			"ok", "info", 1);
@@ -366,6 +378,8 @@ int main(int argc,char *argv[])
 		std::cerr << "An error occured creating destination file."<< std::endl ; 
 		return false;
 	}
+
+	
 
 	
 	OpenFileName = tinyfd_openFileDialog(
