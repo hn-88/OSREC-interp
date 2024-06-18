@@ -209,19 +209,20 @@ struct RThetaPhi {
 
 RThetaPhi toSpherical (XYZ p) {
 	// https://gamedev.stackexchange.com/questions/66906/spherical-coordinate-from-cartesian-coordinate
+	// https://neutrium.net/mathematics/converting-between-spherical-and-cartesian-co-ordinate-systems/
 	RThetaPhi a;
 	a.r 		= std::sqrt(p.x*p.x + p.y*p.y + p.z*p.z);
-	a.phi 		= std::atan2(p.x,p.z);
-	a.theta 	= std::atan2(std::hypot(p.x,p.z), p.y);	
+	a.phi 		= std::atan2(p.y, a.r);
+	a.theta 	= std::atan2(p.y, p.x);	
 	return a;
 }
 
 XYZ toCartesian (RThetaPhi a) {
-	// https://gamedev.stackexchange.com/questions/44738/spherical-to-cartesian-coordinates
+	// https://neutrium.net/mathematics/converting-between-spherical-and-cartesian-co-ordinate-systems/
 	XYZ p;
-	p.z = -a.r * std::sin(a.phi) * std::cos(a.theta);
-	p.x = a.r * std::sin(a.phi) * std::sin(a.theta);
-	p.y = a.r * std::cos(a.phi);
+	p.x = a.r * std::sin(a.phi) * std::cos(a.theta);
+	p.y = a.r * std::sin(a.phi) * std::sin(a.theta);
+	p.z = a.r * std::cos(a.phi);
 	return p;
 }
 
