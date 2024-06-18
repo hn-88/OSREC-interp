@@ -353,6 +353,23 @@ class ScriptKeyFrame {
 void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	// optional - add a check to make sure kf1 and kf2 have the same object in Focus
 	// add 99 points between kf1 and kf2 equi-spaced in time and spherical co-ords 
+
+	// first find the increments for each of the coords
+	double xrotincr = (kf1.getCameraPos().xrot - kf2.getCameraPos().xrot) / 100;
+
+	XYZ p1, p2;
+	RThetaPhi a1, a2;
+	p1.x = kf1.getCameraPos().xpos;
+	p1.y = kf1.getCameraPos().ypos;
+	p1.z = kf1.getCameraPos().zpos;
+	p2.x = kf2.getCameraPos().xpos;
+	p2.y = kf2.getCameraPos().ypos;
+	p2.z = kf2.getCameraPos().zpos;
+	a1 = toSpherical(p1);
+	a2 = toSpherical(p2);
+	double rincr = (a1.r - a2.r) / 100;
+	double thetaincr = (a1.theta - a2.theta) / 100;
+	double phiincr = (a1.phi - a2.phi) / 100;
 	
 }
 
