@@ -356,6 +356,10 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 
 	// first find the increments for each of the coords
 	double xrotincr = (kf1.getCameraPos().xrot - kf2.getCameraPos().xrot) / 100;
+	double yrotincr = (kf1.getCameraPos().yrot - kf2.getCameraPos().yrot) / 100;
+	double zrotincr = (kf1.getCameraPos().zrot - kf2.getCameraPos().zrot) / 100;
+	double wrotincr = (kf1.getCameraPos().wrot - kf2.getCameraPos().wrot) / 100;
+	double scaleincr = (kf1.getCameraPos().scale - kf2.getCameraPos().scale) / 100;
 
 	XYZ p1, p2;
 	RThetaPhi a1, a2;
@@ -370,6 +374,13 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	double rincr = (a1.r - a2.r) / 100;
 	double thetaincr = (a1.theta - a2.theta) / 100;
 	double phiincr = (a1.phi - a2.phi) / 100;
+
+	// now loop through the intermediate points
+	for (int i = 1; i < 100; i++) {
+		// create interpolated CameraKeyFrame
+		CameraKeyFrame ikf;
+		// return vector ikf?
+	}
 	
 }
 
