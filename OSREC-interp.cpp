@@ -355,6 +355,7 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	// add 99 points between kf1 and kf2 equi-spaced in time and spherical co-ords 
 
 	// first find the increments for each of the coords
+	
 	double xrotincr = (kf1.getCameraPos().xrot - kf2.getCameraPos().xrot) / 100;
 	double yrotincr = (kf1.getCameraPos().yrot - kf2.getCameraPos().yrot) / 100;
 	double zrotincr = (kf1.getCameraPos().zrot - kf2.getCameraPos().zrot) / 100;
@@ -376,11 +377,26 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	double phiincr = (a1.phi - a2.phi) / 100;
 
 	// now loop through the intermediate points
+	CameraKeyFrame ikf;
+	XYZ p;
+	RThetaPhi a;
+	ikf.copyFrom(kf1);
+	CameraPos ifkcampos;
 	for (int i = 1; i < 100; i++) {
-		// create interpolated CameraKeyFrame
-		CameraKeyFrame ikf;
+		// add suitable increment to interpolated CameraKeyFrame
+		ifkcampos = ifk.getCameraPos();
+		p.x = ifkcampos.xpos;
+		p.y = ifkcampos.ypos;
+		p.z = ifkcampos.zpos;
+		a = toSpherical(p);
+		a.r += rincr;
+		a.theta += thetaincr;
+		a.phi += phiincr;
+		p = toCartesian(a);
+		
+		
 		// return vector ikf?
-		destfileout << "Testing " << i << std::endl;
+		//destfileout << "Testing " << i << std::endl;
 	}
 	
 }
