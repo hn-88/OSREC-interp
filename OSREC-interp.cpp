@@ -380,6 +380,7 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 		// create interpolated CameraKeyFrame
 		CameraKeyFrame ikf;
 		// return vector ikf?
+		destfileout << "Testing " << i << std::endl;
 	}
 	
 }
@@ -552,10 +553,13 @@ int main(int argc,char *argv[])
 			skf.setTimestampsFrom(prevkf);
 			skf.setScriptString(scriptstring);
 			destfileout << skf.getScrkfAscii();
-			
 		}
 		// increment timeOS & timeRec
 		kf.incrementOnlyTwoTimestamps(timeincr);
+
+		// test interpolatebetween
+		interpolatebetween(prevkf, kf);
+		
 		// write the kf out to destfile
 		destfileout << kf.getCamkfAscii();
 		
