@@ -367,20 +367,20 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 
 	// first find the increments for each of the coords
 	
-	double xrotincr = (kf1.getCameraPos().xrot - kf2.getCameraPos().xrot) / 100;
-	double yrotincr = (kf1.getCameraPos().yrot - kf2.getCameraPos().yrot) / 100;
-	double zrotincr = (kf1.getCameraPos().zrot - kf2.getCameraPos().zrot) / 100;
-	double wrotincr = (kf1.getCameraPos().wrot - kf2.getCameraPos().wrot) / 100;
-	double scaleincr = (kf1.getCameraPos().scale - kf2.getCameraPos().scale) / 100;
+	double xrotincr = (kf1.pos.xrot - kf2.pos.xrot) / 100;
+	double yrotincr = (kf1.pos.yrot - kf2.pos.yrot) / 100;
+	double zrotincr = (kf1.pos.zrot - kf2.pos.zrot) / 100;
+	double wrotincr = (kf1.pos.wrot - kf2.pos.wrot) / 100;
+	double scaleincr = (kf1.pos.scale - kf2.pos.scale) / 100;
 
 	XYZ p1, p2;
 	RThetaPhi a1, a2;
-	p1.x = kf1.getCameraPos().xpos;
-	p1.y = kf1.getCameraPos().ypos;
-	p1.z = kf1.getCameraPos().zpos;
-	p2.x = kf2.getCameraPos().xpos;
-	p2.y = kf2.getCameraPos().ypos;
-	p2.z = kf2.getCameraPos().zpos;
+	p1.x = kf1.pos.xpos;
+	p1.y = kf1.pos.ypos;
+	p1.z = kf1.pos.zpos;
+	p2.x = kf2.pos.xpos;
+	p2.y = kf2.pos.ypos;
+	p2.z = kf2.pos.zpos;
 	a1 = toSpherical(p1);
 	a2 = toSpherical(p2);
 	double rincr = (a1.r - a2.r) / 100;
@@ -392,22 +392,28 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	XYZ p;
 	RThetaPhi a;
 	ikf.copyFrom(kf1);
-	CameraPos ifkcampos;
+	CameraPos ikfcampos;
 	for (int i = 1; i < 100; i++) {
 		// add suitable increment to interpolated CameraKeyFrame
-		ifkcampos = ifk.getCameraPos();
-		p.x = ifkcampos.xpos;
-		p.y = ifkcampos.ypos;
-		p.z = ifkcampos.zpos;
+		ikfcampos = ikf.pos;
+		p.x = ikfcampos.xpos;
+		p.y = ikfcampos.ypos;
+		p.z = ikfcampos.zpos;
 		a = toSpherical(p);
 		a.r += rincr;
 		a.theta += thetaincr;
 		a.phi += phiincr;
 		p = toCartesian(a);
+		ikfcampos.xpos = p.x;
+		ikfcampos.ypos = p.y;
+		ikfcampos.zpos = p.z;
+		ikfcampos.xrot += xrotincr;
+		ikfcampos.yrot += yrotincr;
+		ikfcampos.zrot += zrotincr;
+		ikfcampos.wrot += wrotincr;
+		ikfcampos.scale += scaleincr;
 		
-		
-		// return vector ikf?
-		//destfileout << "Testing " << i << std::endl;
+		destfileout << ikf.getCamkfAscii() << std::endl;
 	}
 	
 }
