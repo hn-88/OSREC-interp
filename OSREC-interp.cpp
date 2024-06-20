@@ -230,7 +230,8 @@ XYZ toCartesian (RThetaPhi a) {
 class CameraKeyFrame {
   public:
 	Timestamps ts;
-	std::string position;
+	CameraPos pos;
+	std::string fstring;
   
 	void incrementOnlyTwoTimestamps(double incrementval) {
 		ts.timeOs  += incrementval;
@@ -248,10 +249,20 @@ class CameraKeyFrame {
 		
 	};
 	std::string getCamkfAscii() {
-		// https://github.com/OpenSpace/OpenSpace/blob/95b4decccad31f7f703bcb8141bd854ba78c7938/src/interaction/sessionrecording.cpp#L839
+		// https://github.com/OpenSpace/OpenSpace/blob/807699a8902fcb9368a495650b99d537fea8dd0e/src/interaction/sessionrecording.cpp#L820
 		std::stringstream ss;
 		ss << HeaderCameraAscii << " " << ts.timeOs << " " << ts.timeRec << " " 
-			<< std::fixed << std::setprecision(3) << ts.timeSim << " " << position << std::endl;
+			<< std::fixed << std::setprecision(3) << ts.timeSim << " " ;
+		// << "position" << std::endl;
+		// https://github.com/OpenSpace/OpenSpace/blob/807699a8902fcb9368a495650b99d537fea8dd0e/include/openspace/network/messagestructures.h#L190
+		ss << std::setprecision(std::numeric_limits<double>::max_digits10);
+		ss << pos.xpos << ' ' << pos.ypos << ' ' << pos.zpos << ' ';
+	        // Add camera rotation
+	        ss << pos.xrot << ' '
+	            << pos.yrot << ' '
+	            << pos.zrot << ' '
+	            << pos.wrot << ' ';
+	        out << std::scientific << pos.scale << ' ' << fstring << std::endl;			
 		return ss.str();
 	};
 	void populateCamkfAscii(std::string line) {
