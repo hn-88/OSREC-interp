@@ -290,16 +290,7 @@ class CameraKeyFrame {
 			fstring += " " + vwords[i];
 		}		
 	};	// end populateCamkfAscii
-	// copyTo does not work. copyFrom works. Probably due to not passing by reference / passing by value, which would create a temp copy of the var
-	// https://www.geeksforgeeks.org/cpp-functions-pass-by-reference/
-	// void copyTo(CameraKeyFrame kf) {
-	// 	std::cout << "debugging copyTo: LHS timeOS=" << kf.ts.timeOs << " RHS timeOS=" << ts.timeOs << std::endl;
-	// 	kf.ts.timeOs  = ts.timeOs;
-	// 	std::cout << "after assignment operator: LHS timeOS=" << kf.ts.timeOs << " RHS timeOS=" << ts.timeOs << std::endl;
-	// 	kf.ts.timeRec = ts.timeRec;
-	// 	kf.ts.timeSim = ts.timeSim;
-	// 	kf.position = position.c_str();
-	// };
+	
 	void copyFrom(CameraKeyFrame kf) {
 		ts.timeOs  = kf.ts.timeOs;
 		ts.timeRec = kf.ts.timeRec;
@@ -413,7 +404,7 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 		ikfcampos.wrot += wrotincr;
 		ikfcampos.scale += scaleincr;
 		
-		destfileout << ikf.getCamkfAscii() << std::endl;
+		destfileout << ikf.getCamkfAscii();
 	}
 	
 }
