@@ -262,7 +262,7 @@ class CameraKeyFrame {
 	            << pos.yrot << ' '
 	            << pos.zrot << ' '
 	            << pos.wrot << ' ';
-	        out << std::scientific << pos.scale << ' ' << fstring << std::endl;			
+	        ss << std::scientific << pos.scale << ' ' << fstring << std::endl;			
 		return ss.str();
 	};
 	void populateCamkfAscii(std::string line) {
@@ -275,9 +275,19 @@ class CameraKeyFrame {
 		ts.timeOs  = atof(vwords[1].c_str());
 		ts.timeRec = atof(vwords[2].c_str());
 		ts.timeSim = atof(vwords[3].c_str());
-		position = vwords[4];
-		for (int i = 5; i < vwords.size(); i++) {
-			position += " " + vwords[i];
+
+		pos.xpos	= atof(vwords[4].c_str());
+		pos.ypos	= atof(vwords[5].c_str());
+		pos.zpos	= atof(vwords[6].c_str());
+
+		pos.xrot	= atof(vwords[7].c_str());
+		pos.yrot	= atof(vwords[8].c_str());
+		pos.zrot	= atof(vwords[9].c_str());
+		pos.wrot	= atof(vwords[10].c_str());
+		
+		fstring = vwords[11];
+		for (int i = 12; i < vwords.size(); i++) {
+			fstring += " " + vwords[i];
 		}		
 	};	// end populateCamkfAscii
 	// copyTo does not work. copyFrom works. Probably due to not passing by reference / passing by value, which would create a temp copy of the var
@@ -297,30 +307,11 @@ class CameraKeyFrame {
 		position = kf.position.c_str();
 	};
 	CameraPos getCameraPos() {
-		CameraPos pos;
-		// populate pos by splitting the position string of CameraKeyFrame
-		std::stringstream ss(position); // convert the position string to a ss to split it
-		std::string w;
-		std::vector<std::string> vwords;
-		while(getline(ss, w, ' ')) {
-			vwords.push_back(w);
-		}
-		// https://docs.openspaceproject.com/en/releases-v0.20.0/content/session-recording.html#ascii-file-format
-		pos.xpos = atof(vwords[0].c_str());
-		pos.ypos = atof(vwords[1].c_str());
-		pos.zpos = atof(vwords[2].c_str());
-
-		pos.xrot = atof(vwords[3].c_str());
-		pos.yrot = atof(vwords[4].c_str());
-		pos.zrot = atof(vwords[5].c_str());
-		pos.wrot = atof(vwords[6].c_str());
-
-		pos.scale = atof(vwords[7].c_str());
-		
 		return pos;
 	};
-	void setCameraPos(CameraPos pos) {
+	void setCameraPos(CameraPos p) {
 		// set the postition string from the data in struct pos 
+		pos = p;
 	};
     
 }; // end class CameraKeyFrame
