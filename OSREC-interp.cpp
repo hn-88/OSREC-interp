@@ -262,7 +262,8 @@ class CameraKeyFrame {
 	            << pos.yrot << ' '
 	            << pos.zrot << ' '
 	            << pos.wrot << ' ';
-	        ss << std::scientific << pos.scale << ' ' << fstring << std::endl;			
+	        ss << std::scientific << pos.scale;
+		ss << ' ' << fstring << std::endl;			
 		return ss.str();
 	};
 	void populateCamkfAscii(std::string line) {
