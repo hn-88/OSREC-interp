@@ -304,7 +304,16 @@ class CameraKeyFrame {
 		ts.timeOs  = kf.ts.timeOs;
 		ts.timeRec = kf.ts.timeRec;
 		ts.timeSim = kf.ts.timeSim;
-		position = kf.position.c_str();
+		pos.xpos = kf.pos.xpos;
+		pos.ypos = kf.pos.ypos;
+		pos.zpos = kf.pos.zpos;
+		pos.xrot = kf.pos.xrot;
+		pos.yrot = kf.pos.yrot;
+		pos.zrot = kf.pos.zrot;
+		pos.wrot = kf.pos.wrot;
+		pos.scale = kf.pos.scale;
+			
+		fstring = kf.fstring.c_str();
 	};
 	CameraPos getCameraPos() {
 		return pos;
