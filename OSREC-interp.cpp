@@ -366,6 +366,9 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	double wrotincr = (kf1.pos.wrot - kf2.pos.wrot) / 100;
 	double scaleincr = (kf1.pos.scale - kf2.pos.scale) / 100;
 
+	double timeincr = (kf1.ts.timeOs - kf2.ts.timeOs) / 100;
+	double timeSimincr = (kf1.ts.timeSim - kf2.ts.timeSim) / 100;
+
 	XYZ p1, p2;
 	RThetaPhi a1, a2;
 	p1.x = kf1.pos.xpos;
@@ -388,6 +391,7 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	CameraPos ikfcampos;
 	for (int i = 1; i < 100; i++) {
 		// add suitable increment to interpolated CameraKeyFrame
+		ikf.incrementAllTimestamps(timeincr, timeSimincr);
 		ikfcampos = ikf.pos;
 		p.x = ikfcampos.xpos;
 		p.y = ikfcampos.ypos;
