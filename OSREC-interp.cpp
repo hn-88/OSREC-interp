@@ -285,9 +285,10 @@ class CameraKeyFrame {
 		pos.yrot	= atof(vwords[8].c_str());
 		pos.zrot	= atof(vwords[9].c_str());
 		pos.wrot	= atof(vwords[10].c_str());
+		pos.scale	= atof(vwords[11].c_str());
 		
-		fstring = vwords[11];
-		for (int i = 12; i < vwords.size(); i++) {
+		fstring = vwords[12];
+		for (int i = 13; i < vwords.size(); i++) {
 			fstring += " " + vwords[i];
 		}		
 	};	// end populateCamkfAscii
