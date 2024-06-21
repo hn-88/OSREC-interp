@@ -360,14 +360,14 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 
 	// first find the increments for each of the coords
 	
-	double xrotincr = (kf1.pos.xrot - kf2.pos.xrot) / 100;
-	double yrotincr = (kf1.pos.yrot - kf2.pos.yrot) / 100;
-	double zrotincr = (kf1.pos.zrot - kf2.pos.zrot) / 100;
-	double wrotincr = (kf1.pos.wrot - kf2.pos.wrot) / 100;
-	double scaleincr = (kf1.pos.scale - kf2.pos.scale) / 100;
+	double xrotincr = (kf2.pos.xrot - kf1.pos.xrot) / 100;
+	double yrotincr = (kf2.pos.yrot - kf1.pos.yrot) / 100;
+	double zrotincr = (kf2.pos.zrot - kf1.pos.zrot) / 100;
+	double wrotincr = (kf2.pos.wrot - kf1.pos.wrot) / 100;
+	double scaleincr = (kf2.pos.scale - kf1.pos.scale) / 100;
 
-	double timeincr = (kf1.ts.timeOs - kf2.ts.timeOs) / 100;
-	double timeSimincr = (kf1.ts.timeSim - kf2.ts.timeSim) / 100;
+	double timeincr = (kf2.ts.timeOs - kf1.ts.timeOs) / 100;
+	double timeSimincr = (kf2.ts.timeSim - kf1.ts.timeSim) / 100;
 
 	XYZ p1, p2;
 	RThetaPhi a1, a2;
@@ -379,9 +379,9 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	p2.z = kf2.pos.zpos;
 	a1 = toSpherical(p1);
 	a2 = toSpherical(p2);
-	double rincr = (a1.r - a2.r) / 100;
-	double thetaincr = (a1.theta - a2.theta) / 100;
-	double phiincr = (a1.phi - a2.phi) / 100;
+	double rincr = (a2.r - a1.r) / 100;
+	double thetaincr = (a2.theta - a1.theta) / 100;
+	double phiincr = (a2.phi - a1.phi) / 100;
 
 	// now loop through the intermediate points
 	CameraKeyFrame ikf;
