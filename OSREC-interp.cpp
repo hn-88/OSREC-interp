@@ -388,7 +388,7 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	XYZ p;
 	RThetaPhi a;
 	ikf.copyFrom(kf1);
-	CameraPos ikf.pos;
+	
 	for (int i = 1; i < 100; i++) {
 		// add suitable increment to interpolated CameraKeyFrame
 		ikf.incrementAllTimestamps(timeincr, timeSimincr);
