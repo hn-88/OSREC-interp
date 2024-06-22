@@ -388,27 +388,27 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	XYZ p;
 	RThetaPhi a;
 	ikf.copyFrom(kf1);
-	CameraPos ikfcampos;
+	CameraPos ikf.pos;
 	for (int i = 1; i < 100; i++) {
 		// add suitable increment to interpolated CameraKeyFrame
 		ikf.incrementAllTimestamps(timeincr, timeSimincr);
-		ikfcampos = ikf.pos;
-		p.x = ikfcampos.xpos;
-		p.y = ikfcampos.ypos;
-		p.z = ikfcampos.zpos;
+		
+		p.x = ikf.pos.xpos;
+		p.y = ikf.pos.ypos;
+		p.z = ikf.pos.zpos;
 		a = toSpherical(p);
 		a.r += rincr;
 		a.theta += thetaincr;
 		a.phi += phiincr;
 		p = toCartesian(a);
-		ikfcampos.xpos = p.x;
-		ikfcampos.ypos = p.y;
-		ikfcampos.zpos = p.z;
-		ikfcampos.xrot += xrotincr;
-		ikfcampos.yrot += yrotincr;
-		ikfcampos.zrot += zrotincr;
-		ikfcampos.wrot += wrotincr;
-		ikfcampos.scale += scaleincr;
+		ikf.pos.xpos = p.x;
+		ikf.pos.ypos = p.y;
+		ikf.pos.zpos = p.z;
+		ikf.pos.xrot += xrotincr;
+		ikf.pos.yrot += yrotincr;
+		ikf.pos.zrot += zrotincr;
+		ikf.pos.wrot += wrotincr;
+		ikf.pos.scale += scaleincr;
 		
 		destfileout << ikf.getCamkfAscii();
 	}
