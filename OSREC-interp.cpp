@@ -404,10 +404,11 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 		ikf.pos.xpos = p.x;
 		ikf.pos.ypos = p.y;
 		ikf.pos.zpos = p.z;
-		ikf.pos.xrot += xrotincr;
-		ikf.pos.yrot += yrotincr;
-		ikf.pos.zrot += zrotincr;
-		ikf.pos.wrot += wrotincr;
+		// ikf.pos.xrot += xrotincr; // this causes discontinuity at end due to normalization
+		ikf.pos.xrot = i*xrotincr + kf1.pos.xrot;
+		ikf.pos.yrot = i*yrotincr + kf1.pos.yrot;
+		ikf.pos.zrot = i*zrotincr + kf1.pos.zrot;
+		ikf.pos.wrot = i*wrotincr + kf1.pos.wrot;
 		ikf.pos.scale += scaleincr;
 		// need to normalize the rot quat
 		quatmodulus = std::sqrt(ikf.pos.xrot*ikf.pos.xrot + ikf.pos.yrot*ikf.pos.yrot + ikf.pos.zrot*ikf.pos.zrot + ikf.pos.wrot*ikf.pos.wrot);
