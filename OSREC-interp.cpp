@@ -356,7 +356,7 @@ class ScriptKeyFrame {
 
 void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	// optional - add a check to make sure kf1 and kf2 have the same object in Focus
-	// add 99 points between kf1 and kf2 equi-spaced in time and spherical co-ords 
+	// add 999 points between kf1 and kf2 equi-spaced in time and spherical co-ords 
 
 	// first find the increments for each of the coords
 	
