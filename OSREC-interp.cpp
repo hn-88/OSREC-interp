@@ -459,18 +459,20 @@ void splineinterpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	XYZ p;
 	RThetaPhi a;
 	ikf.copyFrom(kf1);
-	double quatmodulus;	
+	double quatmodulus;
+
+	p.x = kf1.pos.xpos;
+	p.y = kf1.pos.ypos;
+	p.z = kf1.pos.zpos;
+	a = toSpherical(p);
+	
 	for (int i = 1; i < 1000; i++) {
 		// add suitable increment to interpolated CameraKeyFrame
 		ikf.incrementAllTimestamps(timeincr, timeSimincr);
-		
-		p.x = ikf.pos.xpos;
-		p.y = ikf.pos.ypos;
-		p.z = ikf.pos.zpos;
-		a = toSpherical(p);
-		a.r += rincr*splinevals[i-1];
-		a.theta += thetaincr*splinevals[i-1];
-		a.phi += phiincr*splinevals[i-1];
+				
+		a.r += i*rincr*splinevals[i-1];
+		a.theta += i*thetaincr*splinevals[i-1];
+		a.phi += i*phiincr*splinevals[i-1];
 		p = toCartesian(a);
 		ikf.pos.xpos = p.x;
 		ikf.pos.ypos = p.y;
