@@ -19,6 +19,9 @@ plt.plot(x, y)
 plt.show()
 # https://github.com/msteinbeck/tinyspline?tab=readme-ov-file#getting-started
 # https://pythonguides.com/python-write-array-to-csv/ 
-array = np.array(y)
+arraynumerator = np.array(y)
+arraydenominator = np.array(x)
+array = np.divide(arraynumerator, arraydenominator)
 
-array.tofile('y.csv', sep = ',')
+arraynumerator.tofile('y.csv', sep = ',')
+array.tofile('ybyx.csv', sep = ',')
