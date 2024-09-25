@@ -361,7 +361,19 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	// optional - add a check to make sure kf1 and kf2 have the same object in Focus
 	// add 999 points between kf1 and kf2 equi-spaced in time and spherical co-ords 
 
-	// first find the increments for each of the coords
+	// first find the increments for each of the coords, 
+	// after normalizing them
+	double quatmodulus;
+	quatmodulus = std::sqrt(kf1.pos.xrot*kf1.pos.xrot + kf1.pos.yrot*kf1.pos.yrot + kf1.pos.zrot*kf1.pos.zrot + kf1.pos.wrot*kf1.pos.wrot);
+	kf1.pos.xrot /= quatmodulus;
+	kf1.pos.yrot /= quatmodulus;
+	kf1.pos.zrot /= quatmodulus;
+	kf1.pos.wrot /= quatmodulus;
+	quatmodulus = std::sqrt(kf2.pos.xrot*kf2.pos.xrot + kf2.pos.yrot*kf2.pos.yrot + kf2.pos.zrot*kf2.pos.zrot + kf2.pos.wrot*kf2.pos.wrot);
+	kf2.pos.xrot /= quatmodulus;
+	kf2.pos.yrot /= quatmodulus;
+	kf2.pos.zrot /= quatmodulus;
+	kf2.pos.wrot /= quatmodulus;
 	
 	double xrotincr = (kf2.pos.xrot - kf1.pos.xrot) / 1000;
 	double yrotincr = (kf2.pos.yrot - kf1.pos.yrot) / 1000;
@@ -391,7 +403,7 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 	XYZ p;
 	RThetaPhi a;
 	ikf.copyFrom(kf1);
-	double quatmodulus;	
+		
 	for (int i = 1; i < 1000; i++) {
 		// add suitable increment to interpolated CameraKeyFrame
 		ikf.incrementAllTimestamps(timeincr, timeSimincr);
