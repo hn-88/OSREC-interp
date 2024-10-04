@@ -372,17 +372,8 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 
 	// first find the increments for each of the coords, 
 	// after normalizing them
-	double quatmodulus;
-	quatmodulus = std::sqrt(kf1.pos.xrot*kf1.pos.xrot + kf1.pos.yrot*kf1.pos.yrot + kf1.pos.zrot*kf1.pos.zrot + kf1.pos.wrot*kf1.pos.wrot);
-	kf1.pos.xrot /= quatmodulus;
-	kf1.pos.yrot /= quatmodulus;
-	kf1.pos.zrot /= quatmodulus;
-	kf1.pos.wrot /= quatmodulus;
-	quatmodulus = std::sqrt(kf2.pos.xrot*kf2.pos.xrot + kf2.pos.yrot*kf2.pos.yrot + kf2.pos.zrot*kf2.pos.zrot + kf2.pos.wrot*kf2.pos.wrot);
-	kf2.pos.xrot /= quatmodulus;
-	kf2.pos.yrot /= quatmodulus;
-	kf2.pos.zrot /= quatmodulus;
-	kf2.pos.wrot /= quatmodulus;
+	kf1.normalizeQuat();
+	kf2.normalizeQuat();
 	
 	double xrotincr = (kf2.pos.xrot - kf1.pos.xrot) / 1000;
 	double yrotincr = (kf2.pos.yrot - kf1.pos.yrot) / 1000;
@@ -505,12 +496,7 @@ void splineinterpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 		ikf.pos.wrot = i*wrotincr*splinevals[i-1] + kf1.pos.wrot;
 		ikf.pos.scale += scaleincr*splinevals[i-1];
 		// need to normalize the rot quat
-		quatmodulus = std::sqrt(ikf.pos.xrot*ikf.pos.xrot + ikf.pos.yrot*ikf.pos.yrot + ikf.pos.zrot*ikf.pos.zrot + ikf.pos.wrot*ikf.pos.wrot);
-		ikf.pos.xrot /= quatmodulus;
-		ikf.pos.yrot /= quatmodulus;
-		ikf.pos.zrot /= quatmodulus;
-		ikf.pos.wrot /= quatmodulus;
-		
+		ikf.normalizeQuat();		
 		destfileout << ikf.getCamkfAscii();
 	}
 	
