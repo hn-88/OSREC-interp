@@ -426,11 +426,7 @@ void interpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 		ikf.pos.wrot = i*wrotincr + kf1.pos.wrot;
 		ikf.pos.scale += scaleincr;
 		// need to normalize the rot quat
-		quatmodulus = std::sqrt(ikf.pos.xrot*ikf.pos.xrot + ikf.pos.yrot*ikf.pos.yrot + ikf.pos.zrot*ikf.pos.zrot + ikf.pos.wrot*ikf.pos.wrot);
-		ikf.pos.xrot /= quatmodulus;
-		ikf.pos.yrot /= quatmodulus;
-		ikf.pos.zrot /= quatmodulus;
-		ikf.pos.wrot /= quatmodulus;
+		ikf.normalizeQuat();
 		
 		destfileout << ikf.getCamkfAscii();
 	}
