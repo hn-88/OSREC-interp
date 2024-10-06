@@ -478,13 +478,12 @@ void splineinterpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 		// add suitable increment to interpolated CameraKeyFrame
 		ikf.incrementAllTimestamps(timeincr, timeSimincr);
 				
-		// a.r += i*rincr*(splinevals[i] - splinevals[0]);
-		// a.theta += i*thetaincr*(splinevals[i] - splinevals[0]);
-		// a.phi += i*phiincr*(splinevals[i] - splinevals[0]);
-		a.r += rincr;
-		a.theta += thetaincr;
-		a.phi += phiincr;
-		
+		a.r += rincr*(splinevals[i] - splinevals[i-1])/0.001;	
+			// rincr multiplied by the ratio of the splinevals increment to linear increment, 
+			// which is 0.001 in the range 0 to 1
+		a.theta += thetaincr*(splinevals[i] - splinevals[i-1])/0.001;
+		a.phi += phiincr*(splinevals[i] - splinevals[i-1])/0.001;
+				
 		p = toCartesian(a);
 		ikf.pos.xpos = p.x;
 		ikf.pos.ypos = p.y;
