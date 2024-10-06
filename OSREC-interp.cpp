@@ -478,19 +478,19 @@ void splineinterpolatebetween(CameraKeyFrame kf1, CameraKeyFrame kf2) {
 		// add suitable increment to interpolated CameraKeyFrame
 		ikf.incrementAllTimestamps(timeincr, timeSimincr);
 				
-		a.r += i*rincr*(splinevals[i] - splinevals[i-1]);
-		a.theta += i*thetaincr*(splinevals[i] - splinevals[i-1]);
-		a.phi += i*phiincr*(splinevals[i] - splinevals[i-1]);
+		a.r += i*rincr*(splinevals[i] - splinevals[0]);
+		a.theta += i*thetaincr*(splinevals[i] - splinevals[0]);
+		a.phi += i*phiincr*(splinevals[i] - splinevals[0]);
 		p = toCartesian(a);
 		ikf.pos.xpos = p.x;
 		ikf.pos.ypos = p.y;
 		ikf.pos.zpos = p.z;
 		// ikf.pos.xrot += xrotincr; // this causes discontinuity at end due to normalization
-		ikf.pos.xrot = i*xrotincr*(splinevals[i] - splinevals[i-1]) + kf1.pos.xrot;
-		ikf.pos.yrot = i*yrotincr*(splinevals[i] - splinevals[i-1]) + kf1.pos.yrot;
-		ikf.pos.zrot = i*zrotincr*(splinevals[i] - splinevals[i-1]) + kf1.pos.zrot;
-		ikf.pos.wrot = i*wrotincr*(splinevals[i] - splinevals[i-1]) + kf1.pos.wrot;
-		ikf.pos.scale += scaleincr*(splinevals[i] - splinevals[i-1]);
+		ikf.pos.xrot = i*xrotincr*(splinevals[i] - splinevals[0]) + kf1.pos.xrot;
+		ikf.pos.yrot = i*yrotincr*(splinevals[i] - splinevals[0]) + kf1.pos.yrot;
+		ikf.pos.zrot = i*zrotincr*(splinevals[i] - splinevals[0]) + kf1.pos.zrot;
+		ikf.pos.wrot = i*wrotincr*(splinevals[i] - splinevals[0]) + kf1.pos.wrot;
+		ikf.pos.scale += scaleincr*(splinevals[i] - splinevals[0]);
 		// need to normalize the rot quat
 		ikf.normalizeQuat();		
 		destfileout << ikf.getCamkfAscii();
