@@ -34,7 +34,8 @@ jobs:
       # But instead using linuxdeployqt as in https://github.com/hn-88/OCVWarp/blob/master/.travis.yml
       run: |
         echo "create appimage"
-        pwd
+        sudo apt install libfuse2
+        # https://askubuntu.com/questions/1363783/cant-run-an-appimage-on-ubuntu-20-04
         mkdir -p appdir/usr/bin ; strip OSREC-interp.bin ; cp OSREC-interp.bin ./appdir/usr/bin/OSREC-interp.bin
         mkdir -p appdir/usr/share/applications ; cp ../appdir/OSREC-interp.desktop ./appdir/usr/share/applications/
         mkdir -p appdir/usr/share/icons/hicolor/256x256/apps ; cp ../appdir/OSREC-interp.png ./appdir/usr/share/icons/hicolor/256x256/apps/
