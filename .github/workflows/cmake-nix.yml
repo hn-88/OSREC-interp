@@ -29,15 +29,15 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
     - name: Create appimage
-      working-directory: ${{github.workspace}}
+      working-directory: ${{github.workspace}}/build
       # https://appimage-builder.readthedocs.io/en/latest/hosted-services/github-actions.html
       # But instead using linuxdeployqt as in https://github.com/hn-88/OCVWarp/blob/master/.travis.yml
       run: |
         echo "create appimage"
         pwd
         mkdir -p appdir/usr/bin ; strip OSREC-interp.bin ; cp OSREC-interp.bin ./appdir/usr/bin/OSREC-interp.bin
-        mkdir -p appdir/usr/share/applications ; cp ./appdir/OSREC-interp.desktop ./appdir/usr/share/applications/
-        mkdir -p appdir/usr/share/icons/hicolor/256x256/apps ; cp ./appdir/OSREC-interp.png ./appdir/usr/share/icons/hicolor/256x256/apps/
+        mkdir -p appdir/usr/share/applications ; cp ../appdir/OSREC-interp.desktop ./appdir/usr/share/applications/
+        mkdir -p appdir/usr/share/icons/hicolor/256x256/apps ; cp ../appdir/OSREC-interp.png ./appdir/usr/share/icons/hicolor/256x256/apps/
         wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
         chmod a+x linuxdeployqt-continuous-x86_64.AppImage
         unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
@@ -53,6 +53,6 @@ jobs:
         name: OSREC-interp-appimage
         # optional, default is artifact
         # A file, directory or wildcard pattern that describes what to upload
-        path: OSREC-interp*x86_64.AppImage
+        path: build/OSREC-interp*x86_64.AppImage
       
     
