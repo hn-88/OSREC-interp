@@ -5,7 +5,7 @@
 
 name: MSBuild-no-lib-deps
 
-on: push
+on: workflow_dispatch
 
 env:
   # Path to the solution file relative to the root of the project.
