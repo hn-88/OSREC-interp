@@ -1,0 +1,12 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Name=OSREC-interp
+Comment=OSREC-interp tool
+Exec=OSREC-interp.bin
+Icon=OSREC-interp
+Terminal=true
+Type=Application
+Categories=Development;
+Name[en_IN]=OSREC-interp

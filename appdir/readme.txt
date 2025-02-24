@@ -1,1 +1,1 @@
-Created for uploading .Desktop and icon files, used in creating AppImages for Linux.
+This appdir contains the files needed to create AppImage files for Linux.
