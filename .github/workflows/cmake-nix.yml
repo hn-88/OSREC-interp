@@ -28,7 +28,7 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-      - name: Create appimage
+    - name: Create appimage
       working-directory: ${{github.workspace}}/build
       # https://appimage-builder.readthedocs.io/en/latest/hosted-services/github-actions.html
       # But instead using linuxdeployqt as in https://github.com/hn-88/OCVWarp/blob/master/.travis.yml
