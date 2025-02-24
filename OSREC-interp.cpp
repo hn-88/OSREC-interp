@@ -38,6 +38,7 @@
 #include <vector>
 #include <iomanip>
 #include <cmath>
+#include <limits>
 
 #include "tinyfiledialogs.h"
 #define CV_PI   3.1415926535897932384626433832795
