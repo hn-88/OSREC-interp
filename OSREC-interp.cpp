@@ -301,6 +301,12 @@ int main(int argc,char *argv[])
 	char const * SaveFileName = "";
 	char const * OpenFileName = "";
 	char const * FilterPatterns[2] =  { "*.osrectxt","*.osrec" };
+	// adding arrays for saving ini file
+	std::string SaveFileNamestr;
+	std::string OpenFileNamestr[100];
+	std::string timeincrstr[100];
+	bool ignoreTime[100];
+	int index = 0;
 
 	SaveFileName = tinyfd_saveFileDialog(
 		"Choose the name and path of the destination file",
@@ -375,7 +381,7 @@ int main(int argc,char *argv[])
 		CameraKeyFrame kf;
 		char const * lTmp;
 		lTmp = tinyfd_inputBox(
-			"Please Input", "Desired playback time till next keyframe in seconds", "100.0");
+			"Please Input", "Desired playback time till next keyframe in seconds", "10.0");
 			if (!lTmp) return 1 ;	
 		timeincrstr =  lTmp;
 		timeincr = atof(lTmp);
@@ -459,5 +465,29 @@ int main(int argc,char *argv[])
 		prevkf.copyFrom(kf);
 		
 	} // end while loop for new keyframes
+
+	// save parameters as an ini file
+    std::string::size_type pAt = SaveFileNamestr.find_last_of('.');                  // Find extension point
+    std::string ininame = SaveFileNamestr.substr(0, pAt) + ".ini";   // Form the ini name 
+    std::ofstream inioutfile(ininame, std::ofstream::out);
+    inioutfile << "#ini_file_for_OSREC-interpv2--Comments_start_with_#" << std::endl;
+    inioutfile << "#Each_parameter_is_entered_in_the_line_below_the_comment." << std::endl;
+    inioutfile << "#Output_file_path" << std::endl;
+    inioutfile << SaveFileNamestr << std::endl;
+    inioutfile << "#Initial_osrectxt_file" << std::endl;
+    inioutfile << OpenFileNamestr[0] << std::endl;
+	/*
+    while (int i=1;i<numvids;i++)
+	{
+		inioutfile << "#Filename" << i << std::endl;
+		inioutfile << VidFileName[i] << std::endl;
+		inioutfile << "#vidlongi" << i << std::endl;
+		inioutfile << vidlongi[i] << std::endl;
+		inioutfile << "#vidlati" << i << std::endl;
+		inioutfile << vidlati[i] << std::endl;
+		inioutfile << "#vidw" << i << std::endl;
+		inioutfile << vidw[i] << std::endl;
+	}
+	*/
 	   
 } // end main
