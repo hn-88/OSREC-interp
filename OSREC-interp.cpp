@@ -294,10 +294,6 @@ int main(int argc,char *argv[])
 	std::cout << std::endl;
 	std::cout << "Documentation is at https://github.com/hn-88/OSREC-interp/wiki" << std::endl;
 
-	tinyfd_messageBox("Please Note", 
-			"First input the destination OSRECTXT file. This tool then takes an initial osrectxt file, appends to it camera keyframes from subsequent osrectxt files with suitable interpolation, and saves to the destination OSRECTXT file.", 
-			"ok", "info", 1);
-	
 	char const * SaveFileName = "";
 	char const * OpenFileName = "";
 	char const * FilterPatterns[2] =  { "*.osrectxt","*.osrec" };
@@ -307,7 +303,90 @@ int main(int argc,char *argv[])
 	std::string timeincrstr[100];
 	std::string ignoreTimestr[100];
 	int index = 1;
+	bool skipinputs = 0;
+	std::string tempstring, inistr;
+	
+	if(argc <= 1) {
+		char const * FilterPatternsini[2] =  { "*.ini","*.*" };
+		char const * OpenFileNameini;
+		
+		OpenFileNameini = tinyfd_openFileDialog(
+				"Open an ini file if it exists",
+				"",
+				2,
+				FilterPatternsini,
+				NULL,
+				0);
 
+		if (! OpenFileNameini)
+		{
+			skipinputs = 0;
+		}
+		else
+		{
+			skipinputs = 1;
+			inistr = OpenFileNameini;
+		}
+	}
+	    
+	if(argc > 1) {
+			// argument can be ini file path
+			skipinputs = 1;
+			inistr = argv[1];
+	}
+	
+	if(skipinputs) {
+		std::ifstream infile(inistr);
+		if (infile.is_open())
+		  {
+			  try
+			  {
+				std::getline(infile, tempstring);
+				std::getline(infile, tempstring);
+				std::getline(infile, tempstring);
+				// first three lines of ini file are comments
+				std::getline(infile, SaveFileNamestr);
+				// https://stackoverflow.com/questions/6649852/getline-not-working-properly-what-could-be-the-reasons
+				// dummy getline after the >> on previous line
+				std::getline(infile, tempstring);
+				std::getline(infile, OpenFileNamestr[0]);
+				int i = 1;
+				std::getline(infile, tempstring);				
+				while(tempstring.size() > 3)
+				{
+					std::getline(infile, timeincrstr[i]);
+					std::getline(infile, tempstring);
+					std::getline(infile, ignoreTimestr[i]);
+					std::getline(infile, tempstring);
+					std::getline(infile, OpenFileNamestr[i]);
+					std::getline(infile, tempstring);
+				}
+				infile.close();
+				skipinputs = 1;
+			  } // end try
+			  catch(std::ifstream::failure &readErr) 
+				{
+					std::cerr << "\n\nException occured when reading ini file\n"
+						<< readErr.what()
+						<< std::endl;
+					skipinputs = 0;
+				} // end catch
+			 
+		  } // end if isopen
+		  
+	  } // end if argc > 1
+	
+	if(!skipinputs)
+	{
+	// better to use getline than cin
+	// https://stackoverflow.com/questions/4999650/c-how-do-i-check-if-the-cin-buffer-is-empty
+	tinyfd_messageBox("Please Note", "ini file not supplied or unreadable. So, manual inputs ...", "ok", "info", 1);
+	
+	tinyfd_messageBox("Please Note", 
+			"First input the destination OSRECTXT file. This tool then takes an initial osrectxt file, appends to it camera keyframes from subsequent osrectxt files with suitable interpolation, and saves to the destination OSRECTXT file.", 
+			"ok", "info", 1);
+	
+	
 	SaveFileName = tinyfd_saveFileDialog(
 		"Choose the name and path of the destination file",
 		"final.osrectxt",
@@ -493,11 +572,13 @@ int main(int argc,char *argv[])
 	while (OpenFileNamestr[i].size()>0) {
 		inioutfile << "#time_increment" << i << std::endl;
 		inioutfile << timeincrstr[i] << std::endl;
-		inioutfile << "#ignoreTimestr_should_be_true_or_false_in_small_case" << i << std::endl;
+		inioutfile << "#ignoreKeyframeCalendarTime_should_be_true_or_false_in_small_case" << i << std::endl;
 		inioutfile << ignoreTimestr[i] << std::endl;
-		inioutfile << "Next_appended_osrectxt_file" << i << std::endl;
+		inioutfile << "Appended_osrectxt_file" << i << std::endl;
 		inioutfile << OpenFileNamestr[i] << std::endl;
 		i++;
 	} // end while loop for writing ini file
+	
+	} // !skipinputs
 			   
 } // end main
