@@ -383,7 +383,7 @@ int main(int argc,char *argv[])
 		lTmp = tinyfd_inputBox(
 			"Please Input", "Desired playback time till next keyframe in seconds", "10.0");
 			if (!lTmp) return 1 ;	
-		timeincrstr =  lTmp;
+		timeincrstr[index] =  std::string(lTmp);
 		timeincr = atof(lTmp);
 		if (ignoreAll) {
 			ignoreTime = true;
