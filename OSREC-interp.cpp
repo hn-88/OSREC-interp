@@ -629,7 +629,7 @@ int main(int argc,char *argv[])
 		CameraKeyFrame kf;
 		timeincr = atof(timeincrstr[j].c_str());
 					
-		if(ignoreTimestr[j]="true") {
+		if(ignoreTimestr[j] == "true") {
 			ignoreTime=1;
 		} else {
 			ignoreTime=0;
