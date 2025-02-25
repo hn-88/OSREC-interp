@@ -376,7 +376,7 @@ int main(int argc,char *argv[])
 		  
 	  } // end if argc > 1
 	
-	if(!skipinputs)
+	if(!skipinputs) // manual inputs
 	{
 	// better to use getline than cin
 	// https://stackoverflow.com/questions/4999650/c-how-do-i-check-if-the-cin-buffer-is-empty
@@ -579,6 +579,113 @@ int main(int argc,char *argv[])
 		i++;
 	} // end while loop for writing ini file
 	
-	} // !skipinputs
+	} // end !skipinputs
+	else { //all inputs are from ini file - so, skipinputs
+		
+	try {
+		destfileout.open(SaveFileNamestr, std::ofstream::out );		
+	} catch (int) {
+		std::cerr << "An error occured creating destination file."<< std::endl ; 
+		return false;
+	}
+	
+	//////////////////////////////////////////////////
+	// from https://github.com/OpenSpace/OpenSpace/blob/0ff646a94c8505b2b285fdd51800cdebe0dda111/src/interaction/sessionrecording.cpp#L363
+	// checking the osrectxt format etc
+	/////////////////////////
+	std::string _playbackFilename = OpenFileNamestr[0];
+	bool validf = checkIfValidRecFile(_playbackFilename);
+	if (!validf) {
+		return false;
+	}
+		
+	//////////////////////////////////////////////////////
+	// start the copy from initial osrectxt to destination
+	// and also find the last camera keyframe.
+	//////////////////////////////////////////////////////
+
+	std::ifstream _playbackFile;
+	_playbackFile.open(_playbackFilename, std::ifstream::in);
+	char line[lineBufferForGetlineSize];
+	while(_playbackFile.getline(line, lineBufferForGetlineSize)) {
+		destfileout << line << std::endl;
+		if(line[0] == 'c') {
+			if(line[1] == 'a') {
+				if(line[2] == 'm') {
+					tempstring = line;
+				}
+			}
+		}
+		
+	}
+	// tempstring now contains the last camera keyframe
+	prevkf.populateCamkfAscii(tempstring);
+	
+	int j=1;
+	while( OpenFileNamestr[j].size() > 3) {
+		
+		// append the next keyframe, that is
+		// the last camera keyframe of next osrectxt file
+		CameraKeyFrame kf;
+		timeincr = atof(timeincrstr[j].c_str());
+					
+		if(ignoreTimestr[j]="true") {
+			ignoreTime=1;
+		} else {
+			ignoreTime=0;
+		}
+		
+		if(ignoreTime ) {
+			//script 956.698 0 768100268.890  1 openspace.time.setPause(true)
+			std::string scriptstring = "1 openspace.time.setPause(true)";
+			ScriptKeyFrame skf;
+			skf.setTimestampsFrom(prevkf);
+			skf.setScriptString(scriptstring);
+			destfileout << skf.getScrkfAscii();
+		} else {
+			// do not ignore simu time
+			std::string scriptstring = "1 openspace.time.setPause(false)";
+			ScriptKeyFrame skf;
+			skf.setTimestampsFrom(prevkf);
+			skf.setScriptString(scriptstring);
+			destfileout << skf.getScrkfAscii();			
+		}
+		
+		std::string pbFilename = OpenFileNamestr[j];
+		bool validf = checkIfValidRecFile(pbFilename);
+		if (!validf) {
+			tinyfd_messageBox("Sorry!", 
+			"That doesn't seem to be a valid osrec file. Exiting.", 
+			"ok", "info", 1);
+			return false;
+		}
+		
+		std::string nextKfstr = getLastCameraKfstring(pbFilename);
+		kf.populateCamkfAscii(nextKfstr);
+		// set timeOS & timeRec to previous keyframe's values
+		kf.setTimestampsFrom(prevkf);
+		if (!ignoreTime) {
+			// increment calendar time, ie. timeRec
+			double timeRecdiff = timeincr;
+			double timeSimdiff = kf.ts.timeSim - prevkf.ts.timeSim;
+			int deltatime = (int)(timeSimdiff / timeRecdiff);
+			std::string scriptstring = "1 openspace.time.setDeltaTime(" + std::to_string(deltatime) + ")";
+			ScriptKeyFrame skf;
+			skf.setTimestampsFrom(prevkf);
+			skf.setScriptString(scriptstring);
+			destfileout << skf.getScrkfAscii();			
+		}
+		// increment timeOS & timeRec
+		kf.incrementOnlyTwoTimestamps(timeincr);
+		// write the kf out to destfile
+		destfileout << kf.getCamkfAscii();
+		
+		// update prevkf
+		prevkf.copyFrom(kf);
+		j++;
+		
+	} // end while loop for new keyframes,  OpenFileNamestr[j].size() > 3
+		
+	} // end skipinputs else section
 			   
 } // end main
