@@ -480,27 +480,24 @@ int main(int argc,char *argv[])
 	} // end while loop for new keyframes
 
 	// save parameters as an ini file
-    std::string::size_type pAt = SaveFileNamestr.find_last_of('.');                  // Find extension point
-    std::string ininame = SaveFileNamestr.substr(0, pAt) + ".ini";   // Form the ini name 
-    std::ofstream inioutfile(ininame, std::ofstream::out);
-    inioutfile << "#ini_file_for_OSREC-interpv2--Comments_start_with_#" << std::endl;
-    inioutfile << "#Each_parameter_is_entered_in_the_line_below_the_comment." << std::endl;
-    inioutfile << "#Output_file_path" << std::endl;
-    inioutfile << SaveFileNamestr << std::endl;
-    inioutfile << "#Initial_osrectxt_file" << std::endl;
-    inioutfile << OpenFileNamestr[0] << std::endl;
-	/*
-    while (int i=1;i<numvids;i++)
-	{
-		inioutfile << "#Filename" << i << std::endl;
-		inioutfile << VidFileName[i] << std::endl;
-		inioutfile << "#vidlongi" << i << std::endl;
-		inioutfile << vidlongi[i] << std::endl;
-		inioutfile << "#vidlati" << i << std::endl;
-		inioutfile << vidlati[i] << std::endl;
-		inioutfile << "#vidw" << i << std::endl;
-		inioutfile << vidw[i] << std::endl;
-	}
-	*/
-	   
+	std::string::size_type pAt = SaveFileNamestr.find_last_of('.');                  // Find extension point
+	std::string ininame = SaveFileNamestr.substr(0, pAt) + ".ini";   // Form the ini name 
+	std::ofstream inioutfile(ininame, std::ofstream::out);
+	inioutfile << "#ini_file_for_OSREC-interpv2--Comments_start_with_#" << std::endl;
+	inioutfile << "#Each_parameter_is_entered_in_the_line_below_the_comment." << std::endl;
+	inioutfile << "#Output_file_path" << std::endl;
+	inioutfile << SaveFileNamestr << std::endl;
+	inioutfile << "#Initial_osrectxt_file" << std::endl;
+	inioutfile << OpenFileNamestr[0] << std::endl;
+	int i = 1;
+	while (OpenFileNamestr[i].size()>0) {
+		inioutfile << "#time_increment" << i << std::endl;
+		inioutfile << timeincrstr[i] << std::endl;
+		inioutfile << "#ignoreTimestr_should_be_true_or_false_in_small_case" << i << std::endl;
+		inioutfile << ignoreTimestr[i] << std::endl;
+		inioutfile << "Next_appended_osrectxt_file" << i << std::endl;
+		inioutfile << OpenFileNamestr[i] << std::endl;
+		i++;
+	} // end while loop for writing ini file
+			   
 } // end main
