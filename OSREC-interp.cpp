@@ -305,7 +305,7 @@ int main(int argc,char *argv[])
 	std::string SaveFileNamestr;
 	std::string OpenFileNamestr[100];
 	std::string timeincrstr[100];
-	bool ignoreTime[100];
+	std::string ignoreTimestr[100];
 	int index = 0;
 
 	SaveFileName = tinyfd_saveFileDialog(
