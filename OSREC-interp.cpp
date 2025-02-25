@@ -306,7 +306,7 @@ int main(int argc,char *argv[])
 	std::string OpenFileNamestr[100];
 	std::string timeincrstr[100];
 	std::string ignoreTimestr[100];
-	int index = 0;
+	int index = 1;
 
 	SaveFileName = tinyfd_saveFileDialog(
 		"Choose the name and path of the destination file",
@@ -320,6 +320,7 @@ int main(int argc,char *argv[])
 		std::cerr << "An error occured creating destination file."<< std::endl ; 
 		return false;
 	}
+	SaveFileNamestr = std::string(SaveFileName);
 
 	
 	OpenFileName = tinyfd_openFileDialog(
@@ -338,6 +339,7 @@ int main(int argc,char *argv[])
 	if (!validf) {
 		return false;
 	}
+	OpenFileNamestr[0] = std::string(OpenFileName);
 	
 	//////////////////////////////////////////////////////
 	// start the copy from initial osrectxt to destination
@@ -365,7 +367,11 @@ int main(int argc,char *argv[])
 	bool ignoreAll=false;
 	bool keepSimTimeforAll=false;
 	bool donotaskagain=false;
-	while(true) {
+	
+	// since the variables used to save to ini file are
+	// arrays of size 100, we don't want to cross that number
+	// in the while loop
+	while(index<99) {
 		appendAnother = tinyfd_messageBox(
 		"Append next keyframe osrectxt" , 
 		"Append one more osrectxt?"  , 
@@ -397,6 +403,12 @@ int main(int argc,char *argv[])
 			"yesno" , 
 			"question" , 
 			1 ) ;
+			
+		if(ignoreTime) {
+			ignoreTimestr[index]="true";
+		} else {
+			ignoreTimestr[index]="false";
+		}
 		
 		if(ignoreTime && !donotaskagain) {
 			ignoreAll = tinyfd_messageBox("Ignore for all?", 
@@ -441,6 +453,7 @@ int main(int argc,char *argv[])
 			"ok", "info", 1);
 			return false;
 		}
+		OpenFileNamestr[index] = pbFilename;
 		std::string nextKfstr = getLastCameraKfstring(pbFilename);
 		kf.populateCamkfAscii(nextKfstr);
 		// set timeOS & timeRec to previous keyframe's values
@@ -463,7 +476,7 @@ int main(int argc,char *argv[])
 		
 		// update prevkf
 		prevkf.copyFrom(kf);
-		
+		index++;
 	} // end while loop for new keyframes
 
 	// save parameters as an ini file
