@@ -361,6 +361,7 @@ int main(int argc,char *argv[])
 					std::getline(infile, tempstring);
 					std::getline(infile, OpenFileNamestr[i]);
 					std::getline(infile, tempstring);
+					i++;
 				}
 				infile.close();
 				skipinputs = 1;
