@@ -302,6 +302,7 @@ int main(int argc,char *argv[])
 	std::string OpenFileNamestr[100];
 	std::string timeincrstr[100];
 	std::string ignoreTimestr[100];
+	bool ignoreTime;
 	int index = 1;
 	bool skipinputs = 0;
 	std::string tempstring, inistr;
@@ -442,7 +443,7 @@ int main(int argc,char *argv[])
 	// tempstring now contains the last camera keyframe
 	prevkf.populateCamkfAscii(tempstring);
 
-	bool appendAnother, ignoreTime;
+	bool appendAnother;
 	bool ignoreAll=false;
 	bool keepSimTimeforAll=false;
 	bool donotaskagain=false;
