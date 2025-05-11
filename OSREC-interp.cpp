@@ -290,7 +290,7 @@ int main(int argc,char *argv[])
 	std::cout << std::endl << std::endl;
 	std::cout << "https://github.com/OpenSpace/OpenSpace/discussions/3294" << std::endl;
 	std::cout << "https://github.com/hn-88/openspace-scripts/wiki" << std::endl;
-	std::cout << "https://docs.openspaceproject.com/en/releases-v0.20.0/content/session-recording.html#ascii-file-format" << std::endl;
+	std::cout << "https://docs.openspaceproject.com/releases-v0.20/content/session-recording.html#session-recording" << std::endl;
 	std::cout << std::endl;
 	std::cout << "Documentation is at https://github.com/hn-88/OSREC-interp/wiki" << std::endl;
 
