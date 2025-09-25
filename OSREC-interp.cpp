@@ -48,6 +48,8 @@ static const std::string HeaderScriptAscii = "script";
 static const size_t FileHeaderVersionLength = 5;
 char FileHeaderVersion[FileHeaderVersionLength+1] = "01.00";
 char TargetConvertVersion[FileHeaderVersionLength+1] = "01.00";
+char FileHeaderVersionV2[FileHeaderVersionLength+1] = "02.00";
+char TargetConvertVersionV2[FileHeaderVersionLength+1] = "02.00";
 static const char DataFormatAsciiTag = 'A';
 static const char DataFormatBinaryTag = 'B';
 static const size_t keyframeHeaderSize_bytes = 33;
@@ -691,3 +693,4 @@ int main(int argc,char *argv[])
 	} // end skipinputs else section
 			   
 } // end main
+
