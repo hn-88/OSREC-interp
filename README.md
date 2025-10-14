@@ -1,6 +1,8 @@
 # OSREC-interp
 Tool for concatenating and interpolating between OpenSpace camera keyframes.
 
+**Please note: This software only works with OpenSpace 0.20.x osrectxt files. For OpenSpace 0.21.x, please use [OpenSpace-Keyframe-concat](https://github.com/hn-88/openspace-scripts/tree/main/OpenSpace-Keyframe-concat) instead.**
+
 # Build instructions for any system with g++
 Download the source code from the latest [release](https://github.com/hn-88/OSREC-interp/releases) and just run `g++ -o OSRECinterp.bin OSREC-interp.cpp tinyfiledialogs.c`
 
